@@ -1,0 +1,4 @@
+[submodule "vendor/rd-skills"]
+	path = vendor/rd-skills
+	url = https://github.com/machenjie/rd-skills.git
+	branch = codex/improve_token_usage_quality

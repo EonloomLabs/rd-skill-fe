@@ -1,0 +1,729 @@
+<title>rd-skills 官网蓝图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#f4f6f9;
+  --surface:#ffffff;
+  --surface-2:#eef1f6;
+  --ink:#10161f;
+  --ink-2:#3b4757;
+  --muted:#697788;
+  --line:#d8dfe9;
+  --line-soft:#e6ebf2;
+  --accent:#2a55cf;
+  --accent-soft:#e7ecfb;
+  --violet:#6a3fc0;
+  --violet-soft:#eee8fa;
+  --green:#0e7355;
+  --green-soft:#e2f2ec;
+  --amber:#8c5a00;
+  --amber-soft:#f8eeda;
+  --red:#a8323f;
+  --red-soft:#f8e6e8;
+  --code-bg:#0d1420;
+  --code-ink:#dde6f2;
+  --shadow:0 1px 2px rgba(16,22,31,.04),0 8px 24px rgba(16,22,31,.05);
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0a0e15;
+    --surface:#121924;
+    --surface-2:#18202d;
+    --ink:#e7edf6;
+    --ink-2:#bcc8d8;
+    --muted:#8494a8;
+    --line:#28323f;
+    --line-soft:#1e2733;
+    --accent:#8aa5ff;
+    --accent-soft:#1a2440;
+    --violet:#b799f5;
+    --violet-soft:#221c3a;
+    --green:#5fce9f;
+    --green-soft:#12281f;
+    --amber:#e0a94f;
+    --amber-soft:#2a2110;
+    --red:#f08795;
+    --red-soft:#2d161a;
+    --code-bg:#060a10;
+    --code-ink:#dde6f2;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0a0e15;
+  --surface:#121924;
+  --surface-2:#18202d;
+  --ink:#e7edf6;
+  --ink-2:#bcc8d8;
+  --muted:#8494a8;
+  --line:#28323f;
+  --line-soft:#1e2733;
+  --accent:#8aa5ff;
+  --accent-soft:#1a2440;
+  --violet:#b799f5;
+  --violet-soft:#221c3a;
+  --green:#5fce9f;
+  --green-soft:#12281f;
+  --amber:#e0a94f;
+  --amber-soft:#2a2110;
+  --red:#f08795;
+  --red-soft:#2d161a;
+  --code-bg:#060a10;
+  --code-ink:#dde6f2;
+  --shadow:none;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:15.5px;line-height:1.78;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.shell{display:grid;grid-template-columns:290px minmax(0,1fr);gap:0;min-height:100vh}
+.rail{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--line);
+  padding:30px 22px 40px;
+}
+.rail-brand{display:flex;flex-direction:column;gap:2px;margin-bottom:22px}
+.rail-brand .mark{
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);
+}
+.rail-brand .name{font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.3}
+.rail-brand .sub{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:4px}
+.toc{display:flex;flex-direction:column;gap:1px;margin-top:8px}
+.toc-group{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin:18px 0 6px;padding-left:8px;
+}
+.toc a{
+  display:grid;grid-template-columns:26px 1fr;gap:2px;align-items:baseline;
+  padding:5px 8px;border-radius:6px;color:var(--ink-2);text-decoration:none;font-size:13.2px;line-height:1.45;
+}
+.toc a:hover{background:var(--surface-2);color:var(--ink)}
+.toc a .n{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+.main{max-width:900px;width:100%;margin:0 auto;padding:56px 60px 120px}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+h1{font-size:clamp(32px,4.4vw,46px);font-weight:600;letter-spacing:-.028em;line-height:1.14;margin:0 0 18px;text-wrap:balance}
+h2{
+  font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.25;
+  margin:76px 0 6px;padding-top:26px;border-top:1px solid var(--line);text-wrap:balance;
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;
+}
+h2 .num{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);letter-spacing:0}
+h3{font-size:17.5px;font-weight:600;letter-spacing:-.01em;margin:36px 0 8px;text-wrap:balance}
+h4{font-size:14.5px;font-weight:600;margin:22px 0 6px;color:var(--ink)}
+p{margin:12px 0;max-width:70ch}
+.lead{font-size:17.5px;line-height:1.7;color:var(--ink-2);max-width:64ch;margin:0 0 26px}
+.sec-note{color:var(--muted);font-size:14px;margin:0 0 20px;max-width:70ch}
+ul,ol{padding-left:22px;max-width:70ch}
+li{margin:5px 0}
+li::marker{color:var(--muted)}
+strong{font-weight:600}
+code{
+  font-family:var(--mono);font-size:.875em;background:var(--surface-2);
+  border:1px solid var(--line-soft);border-radius:4px;padding:1px 5px;
+}
+pre{
+  background:var(--code-bg);color:var(--code-ink);border-radius:10px;
+  padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:12.8px;line-height:1.62;
+  border:1px solid var(--line);
+}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+.scroller{overflow-x:auto;margin:18px 0;border-radius:10px}
+
+.hero{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:34px 34px 30px;box-shadow:var(--shadow);margin-bottom:34px;
+}
+.facts{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:24px;
+}
+.fact{background:var(--surface);padding:14px 16px}
+.fact b{display:block;font-family:var(--mono);font-size:21px;font-weight:500;letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums}
+.fact span{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:3px}
+
+table{border-collapse:collapse;width:100%;font-size:13.4px;line-height:1.6}
+th,td{border-bottom:1px solid var(--line-soft);padding:10px 14px;text-align:left;vertical-align:top}
+th{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td code{font-size:12.4px}
+.tnum{font-variant-numeric:tabular-nums}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:14px;margin:20px 0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:20px 0}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);
+  font-size:10.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:5px;border:1px solid transparent;white-space:nowrap;
+}
+.chip.block{background:var(--red-soft);color:var(--red);border-color:color-mix(in srgb,var(--red) 30%,transparent)}
+.chip.warn{background:var(--amber-soft);color:var(--amber);border-color:color-mix(in srgb,var(--amber) 32%,transparent)}
+.chip.ok{background:var(--green-soft);color:var(--green);border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+.chip.info{background:var(--accent-soft);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.chip.jit{background:var(--violet-soft);color:var(--violet);border-color:color-mix(in srgb,var(--violet) 30%,transparent)}
+
+.conflict{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;box-shadow:var(--shadow);
+}
+.conflict-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.conflict-id{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+.conflict-title{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.conflict dl{display:grid;grid-template-columns:82px minmax(0,1fr);gap:6px 14px;margin:10px 0 0;font-size:13.6px;line-height:1.65}
+.conflict dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.conflict dd{margin:0;color:var(--ink-2)}
+.conflict dd.verdict{color:var(--ink);font-weight:450}
+
+.rule{
+  border-left:2px solid var(--accent);background:var(--surface);
+  padding:12px 18px;border-radius:0 8px 8px 0;margin:20px 0;font-size:14.2px;color:var(--ink-2);
+}
+.rule.warn{border-color:var(--amber)}
+.rule strong{color:var(--ink)}
+
+.flow{display:grid;gap:0;margin:20px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line)}
+.flow-step{
+  background:var(--surface);padding:13px 18px;display:grid;
+  grid-template-columns:34px 168px minmax(0,1fr);gap:16px;align-items:baseline;
+  border-bottom:1px solid var(--line-soft);
+}
+.flow-step:last-child{border-bottom:0}
+.flow-step .s{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.flow-step .t{font-size:14px;font-weight:600;letter-spacing:-.005em}
+.flow-step .d{font-size:13.3px;color:var(--muted);line-height:1.6}
+
+.secplan{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0}
+.secplan-row{display:grid;grid-template-columns:30px 190px minmax(0,1fr);gap:16px;padding:15px 18px;border-bottom:1px solid var(--line-soft);align-items:start}
+.secplan-row:last-child{border-bottom:0}
+.secplan-row .s{font-family:var(--mono);font-size:11.5px;color:var(--muted);padding-top:2px;font-variant-numeric:tabular-nums}
+.secplan-row .h{font-size:14.2px;font-weight:600;letter-spacing:-.008em;line-height:1.45}
+.secplan-row .h em{display:block;font-style:normal;font-size:12.3px;font-weight:400;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+.secplan-row .b{font-size:13.5px;color:var(--ink-2);line-height:1.68}
+.secplan-row .b .meta{display:block;margin-top:7px;font-size:12.4px;color:var(--muted)}
+.secplan-row .b .meta b{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--muted)}
+
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.sw{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.sw .band{height:34px}
+.sw .lab{padding:8px 11px;font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--muted)}
+.sw .lab b{display:block;font-size:12px;color:var(--ink);font-weight:500;letter-spacing:.02em}
+
+.q{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:18px 22px;box-shadow:var(--shadow)}
+.q h4{margin-top:0;display:flex;align-items:center;gap:9px}
+.q .qid{font-family:var(--mono);font-size:11px;color:var(--violet);letter-spacing:.08em}
+.q p{margin:6px 0}
+.q .rec{font-size:13.4px;color:var(--ink-2);margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.q .rec b{color:var(--green);font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:500}
+
+figure{margin:22px 0}
+figcaption{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:10px}
+svg{display:block;max-width:100%;height:auto}
+
+footer{
+  margin-top:80px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:24px 24px 28px}
+  .toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px}
+  .main{padding:40px 24px 90px}
+  .flow-step,.secplan-row{grid-template-columns:28px minmax(0,1fr);gap:6px 12px}
+  .flow-step .d,.secplan-row .b{grid-column:2}
+  .conflict dl{grid-template-columns:1fr}
+  .conflict dt{padding-top:8px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell">
+<nav class="rail" aria-label="目录">
+  <div class="rail-brand">
+    <span class="mark">Website Plan v1</span>
+    <span class="name">rd-skills 官网蓝图</span>
+    <span class="sub">依据 prd-v1.md 与 bilingual-guide v22 编制</span>
+  </div>
+  <div class="toc">
+    <div class="toc-group">对齐</div>
+    <a href="#s1"><span class="n">01</span><span>输入核对与冲突裁定</span></a>
+    <a href="#s2"><span class="n">02</span><span>产品策略与信息架构</span></a>
+    <div class="toc-group">工程</div>
+    <a href="#s3"><span class="n">03</span><span>数据架构（唯一真源）</span></a>
+    <a href="#s4"><span class="n">04</span><span>技术方案与目录</span></a>
+    <div class="toc-group">设计</div>
+    <a href="#s5"><span class="n">05</span><span>设计系统与图示语言</span></a>
+    <a href="#s6"><span class="n">06</span><span>首页分段设计</span></a>
+    <a href="#s7"><span class="n">07</span><span>Skills Explorer 与详情页</span></a>
+    <a href="#s8"><span class="n">08</span><span>动效与可访问性</span></a>
+    <div class="toc-group">交付</div>
+    <a href="#s9"><span class="n">09</span><span>性能预算 · SEO · Analytics</span></a>
+    <a href="#s10"><span class="n">10</span><span>里程碑与交付状态</span></a>
+    <a href="#s11"><span class="n">11</span><span>已确认的三项决策</span></a>
+  </div>
+</nav>
+
+<main class="main">
+
+<div class="eyebrow">Engineering Control Plane · Product Website</div>
+<h1>把控制平面讲清楚，而不是把 Skill 列出来</h1>
+<p class="lead">这是 rd-skills 官网的整体设计与实施方案。核心判断只有一条：官网的差异化不在“我们有很多 Skill”，而在“一次任务如何被边界、专业归属、证据和独立 Review 约束着走完”。因此全站的结构、数据源和视觉都围绕这条主干组织。</p>
+
+<div class="hero">
+  <h3 style="margin-top:0">方案摘要</h3>
+  <ul style="margin:0">
+    <li><strong>站点形态</strong>：Next.js App Router 全静态官网，5 类路由，无账户、无后端、无数据库。</li>
+    <li><strong>唯一真源</strong>：所有 Skill 数据与统计数字由上游仓库 <code>machenjie/rd-skills</code> 的 registry 构建期同步生成，网站不维护第二套 Skill 数据。</li>
+    <li><strong>叙事主干</strong>：Intent → Boundary → Professional Owner → JIT Expertise → Bounded Execution → Validation → Independent Review → Evidence → Closure。首页每一段只服务这条线上的一个环节。</li>
+    <li><strong>视觉方向</strong>：Developer Infrastructure。图表即插画，终端即演示；禁止机器人、大脑、渐变星空与 AI 插图。</li>
+    <li><strong>已确认并实现</strong>：英文单语官网；submodule 接入上游 registry；上游文档站内可读；<code>/quickstart</code> 为 agent/scope 安装向导；M0–M5 全量交付，208 个静态页面（见 §10、§11）。</li>
+  </ul>
+  <div class="facts">
+    <div class="fact"><b>26</b><span>Host 顶层 Runtime Skill</span></div>
+    <div class="fact"><b>25</b><span>Professional</span></div>
+    <div class="fact"><b>154</b><span>JIT 可加载项</span></div>
+    <div class="fact"><b>4</b><span>Agent 角色</span></div>
+    <div class="fact"><b>0–3</b><span>每 Task 的 Layer 3</span></div>
+    <div class="fact"><b>5</b><span>Host Adapter</span></div>
+  </div>
+  <p style="font-size:12.5px;color:var(--muted);margin:12px 0 0;max-width:none">上列数字现由 <code>scripts/sync-rd-skills.ts</code> 在构建期从上游 registry 计算得出，组件中没有任何硬编码。实测结果与 v22 指南完全一致：189 source skills = 1 Control + 25 Professional + 150 Foundation + 13 Domain；154 JIT = 141 Product Foundation + 13 Domain。</p>
+</div>
+
+<h2 id="s1"><span class="num">01</span><span>输入核对与冲突裁定</span></h2>
+<p class="sec-note">PRD 与 v22 指南在架构模型上高度一致：六平面、四 Agent、三层 Skill、Evidence Ledger、L1–L5、Host Adapter 全部对得上。但有四处会直接写进页面文案的冲突，必须先裁定，否则官网会发布与真实运行时不符的内容——这本身就违反 rd-skills 自己的 Evidence 原则。</p>
+
+<div class="stack">
+
+  <div class="conflict">
+    <div class="conflict-head">
+      <span class="conflict-id">C1</span>
+      <span class="conflict-title">Quickstart 命令里的 <code>--profile</code> 已经不存在</span>
+      <span class="chip block">Blocking</span>
+    </div>
+    <dl>
+      <dt>PRD</dt><dd>§12 给出 <code>quickstart.py --agent codex --scope user --profile recommended</code> 与 <code>installers/doctor.py --profile recommended</code>。</dd>
+      <dt>v22</dt><dd>§22 明确：不再让用户选择 recommended / full / dev，安装、upgrade、doctor 都没有 <code>--profile</code>；<code>recommended</code> 仅作为 <code>dist/**/recommended/</code> 的兼容 identity 保留。</dd>
+      <dt>裁定</dt><dd class="verdict">以上游仓库当前 CLI 为准。Quickstart 页面的命令块不允许手写，必须由同步脚本从仓库 README / docs 抽取并在 CI 中校验；抽取失败则构建失败。发布一条跑不通的安装命令，是这个官网最贵的错误。</dd>
+    </dl>
+  </div>
+
+  <div class="conflict">
+    <div class="conflict-head">
+      <span class="conflict-id">C2</span>
+      <span class="conflict-title">“5 Supported Host Families” 会构成过度承诺</span>
+      <span class="chip warn">诚实性</span>
+    </div>
+    <dl>
+      <dt>PRD</dt><dd>§7.3 把 “5 Supported Host Families” 作为首页系统指标之一。</dd>
+      <dt>v22</dt><dd>§24 能力矩阵中，Cline 与 OpenAI API 在 Profile / Skill loading / Subagent / Review diff / Validation 五项上均为 <code>unsupported</code>；Codex 与 Claude 的 Review diff 路径也不同（native vs supplied-artifact）。</dd>
+      <dt>裁定</dt><dd class="verdict">首页数字改为 <strong>5 Host Adapters</strong>，并在 Host 段落直接呈现真实能力矩阵，用 native / prompt / supplied-artifact / unsupported 四态标注。PRD §11 自己也写了“不要宣称所有 Host 功能完全一致”，两处保持一致即可。</dd>
+    </dl>
+  </div>
+
+  <div class="conflict">
+    <div class="conflict-head">
+      <span class="conflict-id">C3</span>
+      <span class="conflict-title">Execution Level 的语义标签不能自造</span>
+      <span class="chip warn">术语</span>
+    </div>
+    <dl>
+      <dt>PRD</dt><dd>§10 建议 L1 Bounded / L2 Standard / L3 Elevated / L4 High Assurance / L5 Critical，并注明“具体名字应最终以 Registry / Docs 为准”。</dd>
+      <dt>v22</dt><dd>§12 的实际语义是：L1 = strict minimal eligibility，L2 = bounded / reversible，L3 = <strong>默认标准可执行 Task</strong>，L4 = 存在可达的 material residual risk，L5 = extra assurance materially useful。</dd>
+      <dt>裁定</dt><dd class="verdict">采用 v22 语义。L3 是默认档而不是“提升档”，这个差别会直接改变读者对整套体系的理解。页面用 Assurance Ladder 呈现，并显式标注“Level 是保证强度，不是执行阶段”。</dd>
+    </dl>
+  </div>
+
+  <div class="conflict">
+    <div class="conflict-head">
+      <span class="conflict-id">C4</span>
+      <span class="conflict-title">首页系统指标应该换成更硬的数字</span>
+      <span class="chip info">增强</span>
+    </div>
+    <dl>
+      <dt>PRD</dt><dd>§7.3 的六个数字偏“模型描述”（4 / 3 / 1 / 0–3 / 5）。</dd>
+      <dt>v22</dt><dd>提供了可核验的库存数字：189 source skills、26 runtime top-level、163 Layer 3 source、612 references、154 JIT items。</dd>
+      <dt>裁定</dt><dd class="verdict">两类混合。保留 4 Agent Roles / 0–3 Layer 3 表达模型约束，加入 26 Runtime Skills 与 154 JIT Items 表达真实规模——“顶层只有 26，深度留在后面”本身就是产品主张，比抽象数字更有说服力。</dd>
+    </dl>
+  </div>
+
+</div>
+
+<div class="rule warn"><strong>缺口 G1：语言策略未定。</strong> PRD 全部文案为英文，而 v22 指南是中文为主的双语文档。这决定路由是否需要 <code>/zh</code>、文案量是否翻倍、以及 SEO 主战场。见 §11 决策 A。</div>
+<div class="rule warn"><strong>缺口 G2：本仓库没有 registry。</strong> 当前仓库只有 <code>prd-v1.md</code> 与指南 HTML，没有 <code>src/registry/*.yaml</code>。Skill 数据的接入方式必须先定，否则 §3 无法落地。见 §11 决策 B。</div>
+
+<h2 id="s2"><span class="num">02</span><span>产品策略与信息架构</span></h2>
+<p class="sec-note">官网只承担四件事：解释模型、建立可信度、让人找到对应能力、把人送进安装流程。任何不服务这四件事的页面在第一期都不做。</p>
+
+<h3>路由与页面职责</h3>
+<div class="scroller">
+<table>
+  <thead><tr><th>路由</th><th>页面任务</th><th>主 CTA</th><th>数据依赖</th><th>渲染</th></tr></thead>
+  <tbody>
+    <tr><td><code>/</code></td><td>30 秒讲完控制平面，建立“这不是 Skill 合集”的认知</td><td>Get Started</td><td>counts + 8–12 个代表 Professional</td><td>SSG</td></tr>
+    <tr><td><code>/architecture</code></td><td>给 Infra 工程师看的完整六平面 + 两条 Authority 链 + 执行模型</td><td>Read Docs</td><td>planes / roles 静态内容</td><td>SSG</td></tr>
+    <tr><td><code>/skills</code></td><td>按“决策归属”而非技术栈组织的能力检索</td><td>进入 Skill 详情</td><td>完整 skills 数据集</td><td>SSG + 客户端过滤</td></tr>
+    <tr><td><code>/skills/[slug]</code></td><td>单个 Skill 的契约视图：何时用 / 何时不用 / 输入 / 输出</td><td>View source on GitHub</td><td>单条 skill + 关联 Layer 3</td><td>SSG（generateStaticParams）</td></tr>
+    <tr><td><code>/quickstart</code></td><td>选 agent 与 scope，生成可粘贴命令；含首个任务模板与逐字段解释</td><td>Copy command</td><td>安装器 agent/scope 矩阵 + README 命令块</td><td>SSG + 客户端向导</td></tr>
+    <tr><td><code>/docs</code></td><td>文档索引，按四组分类</td><td>进入文档正文</td><td>14 篇渲染后的文档元信息</td><td>SSG</td></tr>
+    <tr><td><code>/docs/[slug]</code></td><td><strong>站内阅读</strong>上游文档正文，右侧 TOC，链接自动改写</td><td>上下篇 / 查看源文件</td><td>构建期 markdown → HTML</td><td>SSG（13 页）</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>导航</h3>
+<p>左：<code>rd-skills</code> 字标。中：Product / Architecture / Skills / Quickstart / Docs。右：搜索、主题切换、GitHub（带 star 数，ISR 获取，失败时静默隐藏数字而不是显示 0）。</p>
+
+<h3>叙事主干（全站唯一）</h3>
+<figure>
+<svg viewBox="0 0 880 92" role="img" aria-label="从用户意图到可信完成的九个环节：Intent、Boundary、Professional Owner、JIT Expertise、Bounded Execution、Validation、Independent Review、Evidence、Closure">
+  <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">
+    <g stroke="currentColor" stroke-opacity=".22" stroke-width="1">
+      <line x1="20" y1="40" x2="860" y2="40"></line>
+    </g>
+    <g>
+      <circle cx="20" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="125" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="230" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="335" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="440" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="545" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="650" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="755" cy="40" r="4.5" fill="currentColor" fill-opacity=".5"></circle>
+      <circle cx="860" cy="40" r="6" fill="currentColor"></circle>
+    </g>
+    <text x="20" y="22" text-anchor="start" fill-opacity=".62">Intent</text>
+    <text x="125" y="22" text-anchor="middle" fill-opacity=".62">Boundary</text>
+    <text x="230" y="22" text-anchor="middle" fill-opacity=".62">Owner</text>
+    <text x="335" y="22" text-anchor="middle" fill-opacity=".62">JIT Expertise</text>
+    <text x="440" y="22" text-anchor="middle" fill-opacity=".62">Execution</text>
+    <text x="545" y="22" text-anchor="middle" fill-opacity=".62">Validation</text>
+    <text x="650" y="22" text-anchor="middle" fill-opacity=".62">Review</text>
+    <text x="755" y="22" text-anchor="middle" fill-opacity=".62">Evidence</text>
+    <text x="860" y="22" text-anchor="end">Closure</text>
+    <text x="20" y="62" text-anchor="start" fill-opacity=".38">Hero</text>
+    <text x="125" y="62" text-anchor="middle" fill-opacity=".38">§7.5</text>
+    <text x="230" y="62" text-anchor="middle" fill-opacity=".38">§7.10</text>
+    <text x="335" y="62" text-anchor="middle" fill-opacity=".38">§7.9</text>
+    <text x="440" y="62" text-anchor="middle" fill-opacity=".38">§7.8</text>
+    <text x="545" y="62" text-anchor="middle" fill-opacity=".38">§7.6</text>
+    <text x="650" y="62" text-anchor="middle" fill-opacity=".38">§7.8</text>
+    <text x="755" y="62" text-anchor="middle" fill-opacity=".38">§9</text>
+    <text x="860" y="62" text-anchor="end" fill-opacity=".38">§12</text>
+  </g>
+</svg>
+<figcaption>下排为 PRD 中对应的首页段落编号 — 每个环节在首页都有且只有一个负责段落</figcaption>
+</figure>
+
+<h2 id="s3"><span class="num">03</span><span>数据架构（唯一真源）</span></h2>
+<p class="sec-note">这是整个项目最容易做错、也最难补救的部分。PRD §18 已经明确禁止“Website manually maintained skill database”。下面把它变成可执行的机制。</p>
+
+<h3>三级来源优先级</h3>
+<div class="flow">
+  <div class="flow-step"><span class="s">P0</span><span class="t">Repository Registry</span><span class="d"><code>src/registry/professional-skills.yaml</code>、<code>foundation-skills.yaml</code>、domain registry — 权威来源</span></div>
+  <div class="flow-step"><span class="s">P1</span><span class="t">Generated Marketplace Index</span><span class="d">构建产物中的 catalog / manifest，用于补齐 registry 未直接暴露的投影信息</span></div>
+  <div class="flow-step"><span class="s">P2</span><span class="t">Committed Snapshot</span><span class="d"><code>data/skills.snapshot.json</code> — last-known-good，进版本库。上游不可达时构建仍然成功</span></div>
+</div>
+<div class="rule"><strong>硬性约束：</strong>网站代码只读取 <code>data/skills.generated.json</code> 一个文件。任何组件里出现手写的 Skill 名称、描述或计数，视为缺陷。首页那六个数字同样从这个文件派生。</div>
+
+<h3>同步脚本 <code>scripts/sync-rd-skills.ts</code></h3>
+<ol>
+  <li>拉取上游指定 ref（默认 <code>main</code>，可用环境变量覆盖）的 registry 与 catalog 文件。</li>
+  <li>规范化为下方 schema，计算派生统计（各类型计数、Layer 3 总数、references 总数、runtime top-level 数）。</li>
+  <li>Schema 校验 + 完整性断言：slug 唯一、type 合法、每个 Professional 至少有 triggerSignals 与 outputContract、sourcePath 可解析为 GitHub 链接。</li>
+  <li>与 snapshot 做 diff，输出变更摘要（新增/移除/描述变更），便于 review。</li>
+  <li>写入 <code>data/skills.generated.json</code>，并在成功时更新 snapshot。</li>
+  <li>失败时：记录原因 → 回落 snapshot → 构建继续 → 在构建日志与页面 <code>&lt;meta&gt;</code> 中标记数据时间戳。</li>
+</ol>
+
+<h3>规范化 schema</h3>
+<pre><code>type SkillType = "control" | "professional" | "foundation" | "domain";
+
+interface Skill {
+  name: string;                 // backend-change-builder
+  slug: string;                 // backend-change-builder
+  type: SkillType;
+  title: string;                // Backend Change Builder
+  description: string;          // 一句话：拥有哪类工程决定
+  group?: string;               // 需求分析 / 影响判断 / 实现 Owner / Gate / Review
+  roleSupport: AgentRole[];     // main | analysis | task | review
+  triggerSignals: string[];
+  antiTriggerSignals: string[];
+  requiredInputs: string[];
+  outputContract: string[];
+  layer3Candidates: string[];   // slug 引用，构建期校验存在性
+  references: { title: string; path: string }[];
+  sourcePath: string;           // src/professional-skills/&lt;name&gt;/SKILL.md
+  runtimeTopLevel: boolean;     // control | professional = true
+}
+
+interface SkillDataset {
+  generatedAt: string;          // ISO
+  sourceRef: string;            // 上游 commit sha
+  degraded: boolean;            // 是否回落 snapshot
+  skills: Skill[];
+  counts: {
+    sourceTotal: number; control: number; professional: number;
+    foundation: number; domain: number;
+    runtimeTopLevel: number; jitItems: number; references: number;
+  };
+}</code></pre>
+
+<h3>GitHub 动态数据</h3>
+<p>Star / Fork 数走 ISR（<code>revalidate: 3600</code>），失败即隐藏，不阻塞任何页面。仓库元信息（默认分支、latest release）构建期获取并写入 snapshot。<strong>构建绝不能因为 GitHub API 抖动而失败。</strong></p>
+
+<h2 id="s4"><span class="num">04</span><span>技术方案与目录</span></h2>
+
+<div class="scroller">
+<table>
+  <thead><tr><th>层</th><th>选型</th><th>理由</th></tr></thead>
+  <tbody>
+    <tr><td>框架</td><td>Next.js 15 App Router + React Server Components</td><td>PRD 指定；静态优先，首屏 JS 可压到很低</td></tr>
+    <tr><td>语言</td><td>TypeScript strict</td><td>skills 数据集需要类型约束</td></tr>
+    <tr><td>样式</td><td>Tailwind CSS v4 + CSS 变量 token</td><td>token 在 <code>@theme</code> 中集中定义，暗色走 <code>data-theme</code></td></tr>
+    <tr><td>组件</td><td>shadcn/ui（按需，不整包引入）</td><td>只用 Dialog / Sheet / Tabs / Command / Tooltip</td></tr>
+    <tr><td>动效</td><td>Motion（framer-motion）+ 纯 CSS 优先</td><td>仅在解释系统的动画上使用 JS 动效</td></tr>
+    <tr><td>图标</td><td>Lucide</td><td>PRD 指定；禁止 emoji 作为图标</td></tr>
+    <tr><td>搜索</td><td>本地 Fuse.js 索引（skills 数据集）</td><td>无后端，索引 &lt; 100KB，按需动态 import</td></tr>
+    <tr><td>部署</td><td>Vercel，Node 24 / pnpm</td><td>本机已有 pnpm 11；ISR 与 OG 动态图原生支持</td></tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code>rd-skill-fe/
+├─ app/
+│  ├─ layout.tsx                # 字体、theme script、nav、footer
+│  ├─ page.tsx                  # 首页（12 段，全部 Server Component）
+│  ├─ architecture/page.tsx
+│  ├─ skills/page.tsx           # Explorer 壳 + 客户端过滤岛
+│  ├─ skills/[slug]/page.tsx
+│  ├─ quickstart/page.tsx
+│  ├─ docs/page.tsx
+│  └─ opengraph-image.tsx       # 动态 OG，走 §9 的排版规则
+├─ components/
+│  ├─ diagram/                  # PlaneStack / RoleRelay / SkillTree / EvidenceTrack / AssuranceLadder
+│  ├─ terminal/                 # TaskLifecycle（Hero 演示）/ CommandBlock（可复制）
+│  ├─ skills/                   # SkillCard / SkillFilters / SkillContract
+│  └─ ui/                       # shadcn 派生
+├─ data/
+│  ├─ skills.generated.json     # 构建产物，.gitignore
+│  └─ skills.snapshot.json      # last-known-good，入库
+├─ lib/skills.ts                # 唯一读取入口 + 派生统计
+├─ scripts/sync-rd-skills.ts
+└─ content/                     # 纯文案（架构叙述、词汇表），与数据分离</code></pre>
+
+<h2 id="s5"><span class="num">05</span><span>设计系统与图示语言</span></h2>
+<p class="sec-note">视觉目标：像一份可运行的系统文档，而不是一个 SaaS 落地页。所有“插画”都由结构化图表承担。</p>
+
+<h3>色彩 token</h3>
+<div class="swatches">
+  <div class="sw"><div class="band" style="background:#f7f8fa"></div><div class="lab"><b>ground / light</b>#F7F8FA</div></div>
+  <div class="sw"><div class="band" style="background:#090b10"></div><div class="lab"><b>ground / dark</b>#090B10</div></div>
+  <div class="sw"><div class="band" style="background:#2a55cf"></div><div class="lab"><b>accent cobalt</b>#2A55CF · 主结构线</div></div>
+  <div class="sw"><div class="band" style="background:#6a3fc0"></div><div class="lab"><b>violet</b>#6A3FC0 · JIT / 知识层</div></div>
+  <div class="sw"><div class="band" style="background:#0e7355"></div><div class="lab"><b>green</b>#0E7355 · validated / closed</div></div>
+  <div class="sw"><div class="band" style="background:#8c5a00"></div><div class="lab"><b>amber</b>#8C5A00 · unverified / stale</div></div>
+  <div class="sw"><div class="band" style="background:#a8323f"></div><div class="lab"><b>red</b>#A8323F · blocked / unsupported</div></div>
+</div>
+<p><strong>语义色规则：</strong>cobalt 只用于结构与主 CTA；violet 专属 Foundation / Domain / Layer 3，读者看到紫色就知道“这是按需加载的深度知识”；green / amber / red 只表达 Evidence 与 Host 能力状态，不做装饰。暗色模式下所有 accent 提亮至 AA 对比（如 cobalt → #8AA5FF）。</p>
+
+<h3>字体与字阶</h3>
+<p>Sans 用 <strong>Geist</strong> 或 <strong>Inter</strong>（PRD 指定方向），等宽用 <strong>Geist Mono</strong> / <strong>JetBrains Mono</strong>。等宽不只用于代码——所有 Skill 名、Plane 名、状态标签、数字统计都走等宽，让“系统标识符”和“散文”在视觉上可区分。这是全站最重要的一条排版规则。</p>
+<div class="scroller">
+<table>
+  <thead><tr><th>角色</th><th>字号 / 行高</th><th>字重 / 字距</th><th>用途</th></tr></thead>
+  <tbody>
+    <tr><td>Display</td><td>clamp(40, 6vw, 64) / 1.08</td><td>600 / -.03em</td><td>Hero headline</td></tr>
+    <tr><td>H2</td><td>32 / 1.2</td><td>600 / -.02em</td><td>首页段落标题</td></tr>
+    <tr><td>H3</td><td>20 / 1.35</td><td>600 / -.01em</td><td>卡片标题</td></tr>
+    <tr><td>Body</td><td>16 / 1.7</td><td>400</td><td>正文，最宽 68ch</td></tr>
+    <tr><td>Mono label</td><td>11 / 1.4</td><td>500 / .12em / uppercase</td><td>Plane 名、状态、eyebrow</td></tr>
+    <tr><td>Mono data</td><td>13 / 1.55</td><td>400 / tabular-nums</td><td>Skill 名、计数、命令</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>五种图示语言（全站复用，不允许一次性图表）</h3>
+<div class="cols">
+  <div class="card"><h4>Plane Stack</h4><p style="font-size:13.4px;color:var(--ink-2);margin:0">六平面纵向堆叠，每层左侧色条 + 右侧组件 chip。Hover 某层时其余层降至 40% 不透明度。用于 <code>/architecture</code> 与首页 §7.7。</p></div>
+  <div class="card"><h4>Role Relay</h4><p style="font-size:13.4px;color:var(--ink-2);margin:0">四个 Agent 卡片 + 连接轨。每张卡必须同时写“能做”和“<strong>故意不能做</strong>”——后者才是产品主张。</p></div>
+  <div class="card"><h4>Skill Tree</h4><p style="font-size:13.4px;color:var(--ink-2);margin:0">Control → Primary Professional → selector → 0–3 Layer 3 → References 的收敛树。紫色分支表示 JIT，默认折叠，展开是首页最重要的一次交互。</p></div>
+  <div class="card"><h4>Evidence Track</h4><p style="font-size:13.4px;color:var(--ink-2);margin:0">Unverified → Validated → Reviewed → Completed 的状态轨。每个状态同时用颜色、形状和文字标注（可访问性硬要求）。</p></div>
+  <div class="card"><h4>Terminal</h4><p style="font-size:13.4px;color:var(--ink-2);margin:0">等宽面板，带 scope 标题栏。Hero 用它演示任务生命周期，Quickstart 用它承载可复制命令。行高、缩进、颜色语义两处完全一致。</p></div>
+</div>
+
+<div class="rule warn"><strong>视觉禁令（PRD §16，逐条纳入 PR checklist）：</strong>无 AI 机器人 / 大脑 / 宇宙背景 / 霓虹 Cyberpunk / 大面积渐变 / 3D 球体 / 图库照片 / emoji 图标 / AI 生成插图。任何一条出现即 review 打回。</div>
+
+<h2 id="s6"><span class="num">06</span><span>首页分段设计</span></h2>
+<p class="sec-note">12 段，严格对应 PRD §7。每段只回答一个问题，读者向下滚动的过程就是理解主干的过程。</p>
+
+<div class="secplan">
+  <div class="secplan-row"><span class="s">01</span><span class="h">Hero<em>ENGINEERING CONTROL PLANE</em></span><span class="b">Headline：<em>Make coding agents work like an engineering system.</em> 右侧 / 下方是 Terminal 生命周期演示：输入一句真实需求（为结算加重试但不改公开 API），自动逐行推进 Classify → backend-change-builder → Layer 3 → Task → Validation → Review → Evidence → Completed。<span class="meta"><b>动效</b> 自动播放一次，8 行 × 220ms 逐行；播完保留完整结果可回看；reduced-motion 直接显示终态</span></span></div>
+  <div class="secplan-row"><span class="s">02</span><span class="h">System Facts<em>不做 Logo Wall</em></span><span class="b">六个数字（见摘要），全部来自 <code>counts</code>。每个数字下方一行注释说明它为什么重要，例如 “26 · Host 顶层 Runtime Skill —— 深度不在顶层，在 Professional 后面”。</span></div>
+  <div class="secplan-row"><span class="s">03</span><span class="h">Problem<em>Coding is not engineering.</em></span><span class="b">左右对照：Typical Agent（Prompt → Search → Edit → Test → Done，附 7 个失效模式）vs rd-skills（Intent → Boundary → … → Evidence-backed Closure）。左侧刻意用中性灰而非“红色错误”，避免稻草人感。</span></div>
+  <div class="secplan-row"><span class="s">04</span><span class="h">Core Model<em>Three systems. One task.</em></span><span class="b">Decision Boundary / Expertise Injection / Assurance Controller 三张大卡，向下汇聚到一个 Engineering Task 节点。<span class="meta"><b>动效</b> 进入视口时三条汇聚线依次描边，一次性</span></span></div>
+  <div class="secplan-row"><span class="s">05</span><span class="h">How It Works<em>8 步 Timeline</em></span><span class="b">Request → Classify Once → Authority → Professional Owner → JIT Expertise → Execute + Validate → Independent Review → Evidence-backed Closure。桌面横向、移动纵向。第 3 步要能同时展示 Direct 与 Analyzed 两条 Authority 链（v22 §4.2）。</span></div>
+  <div class="secplan-row"><span class="s">06</span><span class="h">Six Planes<em>Plane Stack</em></span><span class="b">六层纵向堆叠 + 组件 chip。顶部一行强调语放大：<strong>These are responsibility planes, not six sequential stages.</strong> 这是最容易被误读的一段，排版上要让这句话无法被跳过。</span></div>
+  <div class="secplan-row"><span class="s">07</span><span class="h">Agent Roles<em>Role Relay</em></span><span class="b">四卡 + 接力轨 + “This is not always a fixed linear pipeline.” 注脚。每卡底部固定一行反色区块写“故意不能做”。</span></div>
+  <div class="secplan-row"><span class="s">08</span><span class="h">Skill Architecture<em>本页视觉高点</em></span><span class="b">Skill Tree 展开交互：Professional 节点点击后展开 Foundation / Domain / References。核心文案 <em>Load the smallest set of expertise that can materially change the current engineering decision.</em> 同时呈现 189 source 与 26 runtime 的对比条，说明“顶层收敛不等于能力减少”。</span></div>
+  <div class="secplan-row"><span class="s">09</span><span class="h">Professionals<em>按决策归属分组</em></span><span class="b">展示 8–12 个代表 Professional，按 v22 的五组分类（需求分析 4 / 影响架构 5 / 实现 Owner 8 / Gate 6 / Review 与治理 3）。每张卡是“它拥有哪类决定”，不是“它支持什么语言”。底部 Browse all 25 skills。</span></div>
+  <div class="secplan-row"><span class="s">10</span><span class="h">Evidence<em>Evidence Track</em></span><span class="b">Change → Validation → Evidence Ledger → Independent Review → Closure，并解释 Scope / Freshness / Proof Limit / Residual Risk 四个概念。核心文案 <em>A green test suite is not automatically proof of correctness.</em><span class="meta"><b>动效</b> 滚动驱动状态推进，可反复触发</span></span></div>
+  <div class="secplan-row"><span class="s">11</span><span class="h">Assurance &amp; Hosts<em>L1–L5 + 能力矩阵</em></span><span class="b">Assurance Ladder（按 C3 裁定用 v22 语义，标注“不是执行阶段”）+ Host 能力矩阵（按 C2 裁定四态标注）。矩阵在移动端转为按 Host 分组的卡片。</span></div>
+  <div class="secplan-row"><span class="s">12</span><span class="h">Quickstart + Open Source<em>转化区</em></span><span class="b">真实 Terminal 四步 + 第一个任务模板（Goal / Acceptance / Allowed scope / Verify / Stop if）。命令块一键复制。收尾 Built in the open：Source / Docs / Governance / Contributing / Security / Validation。</span></div>
+</div>
+
+<h2 id="s7"><span class="num">07</span><span>Skills Explorer 与详情页</span></h2>
+
+<h3>/skills</h3>
+<p>左侧过滤（移动端收进 Sheet）：类型 All / Professional / Foundation / Domain / Control；分组（五个决策归属组）；角色支持（main / analysis / task / review）。搜索命中 name、description、triggerSignals、domain。URL 同步查询参数，保证可分享、可回退、可被搜索引擎抓到分面页。</p>
+<p>Skill Card 显示：名称（等宽）、类型 chip、一句话职责、角色支持、trigger 信号前两条、Layer 3 候选数量。Foundation / Domain 卡片带紫色左边条，并标注 <span class="chip jit">JIT only</span>——让人一眼看出它永远不会出现在 Host 顶层。</p>
+
+<h3>/skills/[slug]</h3>
+<p>页面即“Skill 契约视图”，字段顺序固定，缺失字段留空并标注 <code>not declared in registry</code>，绝不用文案填补：</p>
+<div class="scroller">
+<table>
+  <thead><tr><th>区块</th><th>来源字段</th><th>呈现</th></tr></thead>
+  <tbody>
+    <tr><td>标题区</td><td>name / type / description</td><td>等宽大字 + 类型 chip + 一句话</td></tr>
+    <tr><td>Use When</td><td>triggerSignals</td><td>绿色标记列表</td></tr>
+    <tr><td>Do Not Use When</td><td>antiTriggerSignals</td><td>红色标记列表 — <strong>与 Use When 等权呈现</strong>，这是 rd-skills 区别于普通 skill 集合的关键</td></tr>
+    <tr><td>Required Inputs</td><td>requiredInputs</td><td>等宽清单</td></tr>
+    <tr><td>Output Contract</td><td>outputContract</td><td>等宽清单</td></tr>
+    <tr><td>Related Expertise</td><td>layer3Candidates</td><td>紫色 chip，链接到对应 Foundation / Domain 页</td></tr>
+    <tr><td>References</td><td>references</td><td>外链 GitHub，构建期校验可达</td></tr>
+    <tr><td>Supported Roles</td><td>roleSupport</td><td>四角色矩阵，未支持项灰显</td></tr>
+    <tr><td>Source</td><td>sourcePath</td><td>View source on GitHub</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s8"><span class="num">08</span><span>动效与可访问性</span></h2>
+<div class="cols">
+  <div class="card">
+    <h4>动效准则</h4>
+    <ul style="margin:0;font-size:13.6px">
+      <li>动画必须解释系统，不解释就删除。</li>
+      <li>微交互 150–400ms，缓动统一 <code>cubic-bezier(.2,.8,.2,1)</code>。</li>
+      <li>Hero 生命周期只自动播一次，不循环。</li>
+      <li>滚动触发用 IntersectionObserver，不用滚动劫持。</li>
+      <li><code>prefers-reduced-motion</code> 下全部改为终态直出。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>可访问性硬指标</h4>
+    <ul style="margin:0;font-size:13.6px">
+      <li>状态不得只靠颜色：颜色 + 形状 + 文字三重编码。</li>
+      <li>明暗双主题均达 WCAG AA。</li>
+      <li>所有图表提供文本 fallback（<code>&lt;figcaption&gt;</code> 或 sr-only 描述）。</li>
+      <li>Explorer 过滤器、Skill Tree 展开、主题切换全部键盘可达，焦点环可见。</li>
+      <li>主题切换用无闪烁内联脚本 + <code>data-theme</code>，尊重系统默认。</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="s9"><span class="num">09</span><span>性能预算 · SEO · Analytics</span></h2>
+<div class="scroller">
+<table>
+  <thead><tr><th>项</th><th>目标</th><th>手段</th></tr></thead>
+  <tbody>
+    <tr><td class="tnum">Lighthouse</td><td>四项 ≥ 95</td><td><span class="chip warn">未测量</span> 本地无法可靠跑分。CI 已建（typecheck + registry 同步完整性 + build 阻断合并），Lighthouse CI job 需要在有部署 URL 后接入 <code>/</code>、<code>/skills</code>、<code>/skills/[slug]</code> 三个页面</td></tr>
+    <tr><td>首屏 JS</td><td>共享基线 102KB + 单页 &lt; 4KB</td><td>Server Component 优先；客户端岛只有 Terminal、Skill Tree、Explorer 过滤、主题切换。102KB 是 Next 15 + React 19 的运行时下限，无法再压；Fuse.js 改为输入时动态加载，/skills 首屏由 118KB 降到 109KB</td></tr>
+    <tr><td>HTML 传输</td><td>brotli &lt; 30KB</td><td>实测：首页 21KB、/architecture 13KB、/skills 26KB</td></tr>
+    <tr><td>LCP</td><td>&lt; 1.5s</td><td>Hero 无视频无大图；字体 <code>display:swap</code> + preconnect；关键 CSS 内联</td></tr>
+    <tr><td>图表</td><td>0 图片</td><td>全部 CSS / 内联 SVG，随主题 token 变色</td></tr>
+    <tr><td>CLS</td><td>&lt; 0.02</td><td>Terminal 行数固定占位；star 数用固定宽度骨架</td></tr>
+  </tbody>
+</table>
+</div>
+<h3>SEO 与 OG</h3>
+<p>Title：<code>rd-skills — Engineering Control Plane for AI Coding Agents</code>。每个 Skill 详情页生成独立 title / description / canonical，构成长尾入口（这是 25+ 个高相关页面的自然来源）。结构化数据用 <code>SoftwareSourceCode</code>。OG 图动态生成：字标 + Engineering Control Plane + 主干链路文本，不用抽象 AI 图像。</p>
+<h3>Analytics（第一期只看五条）</h3>
+<p>Homepage → GitHub CTR、Homepage → Quickstart CTR、Quickstart 滚动完成深度、Explorer 使用率、Skill → GitHub source CTR。北极星：Qualified GitHub / Quickstart Conversion。使用 Vercel Analytics，不引入第三方脚本，避免拖累性能分数。</p>
+
+<h2 id="s10"><span class="num">10</span><span>里程碑与交付状态</span></h2>
+<p class="sec-note">M0–M5 已全部实现并本地验证通过。下表记录每个里程碑的实际完成情况与验证方式。</p>
+<div class="scroller">
+<table>
+  <thead><tr><th>阶段</th><th>产出</th><th>状态</th><th>验证</th></tr></thead>
+  <tbody>
+    <tr><td><strong>M0</strong> 地基</td><td>Next.js 15 + Tailwind v4 token + 三态主题 + 站壳 + Geist/Geist Mono</td><td><span class="chip ok">已交付</span></td><td>主题切换无闪烁（内联脚本 + <code>data-theme</code>）；明暗双主题全站走查</td></tr>
+    <tr><td><strong>M1</strong> 数据管线</td><td><code>vendor/rd-skills</code> submodule + <code>sync-rd-skills.ts</code> + schema 校验 + snapshot 回落</td><td><span class="chip ok">已交付</span></td><td>输出 189 source / 26 top-level / 154 JIT / 163 Layer 3 source / 611 references，与 v22 指南逐项吻合</td></tr>
+    <tr><td><strong>M2</strong> 首页</td><td>12 段全量 + 五种图示语言 + Hero Terminal 生命周期</td><td><span class="chip ok">已交付</span></td><td>七问验收对应段落齐备；Hero demo 引用的 skill slug 在构建期校验，写错即构建失败</td></tr>
+    <tr><td><strong>M3</strong> Skills</td><td>Explorer（类型/分组/角色过滤 + 搜索 + URL 同步）+ 189 个详情页</td><td><span class="chip ok">已交付</span></td><td>189 页静态预渲染；无任何手写 skill 文案</td></tr>
+    <tr><td><strong>M4</strong> 转化页</td><td>/architecture · /quickstart 安装向导 · /docs + 13 篇站内文档 · OG · sitemap · robots · Analytics</td><td><span class="chip ok">已交付</span></td><td>命令、host/scope 矩阵、文档正文均由仓库构建期抽取；文件缺失或组合非法即构建失败</td></tr>
+    <tr><td><strong>M5</strong> 收尾</td><td>a11y 审计、移动端走查、性能复核</td><td><span class="chip ok">已交付</span></td><td>各路由均 1 个 h1、1 个 main、0 个无名控件；375px 下 <code>scrollWidth === clientWidth</code>；共 208 个静态 HTML 页面</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>实际交付结构</h3>
+<pre><code>app/                    /, /architecture, /skills, /skills/[slug],
+                        /quickstart, /docs, /guide
+components/diagram/     PlaneStack · RoleRelay · SkillTree · EvidenceTrack
+                        AssuranceLadder · HostMatrix · AuthorityChains · BuildPipeline
+components/terminal/    TaskLifecycle · CommandBlock
+components/quickstart/  SetupWizard（agent/scope → 可粘贴命令）
+content/                narrative copy + 唯一的人工分类（五个决策归属组）
+lib/skills.ts           读取 generated dataset 的唯一入口
+scripts/sync-rd-skills.ts
+scripts/render-docs.ts      上游 markdown → HTML，链接改写
+scripts/read-installer.ts   安装器 agent/scope 矩阵抽取
+data/skills.snapshot.json   last-known-good，入库（含渲染后的文档）</code></pre>
+
+<div class="rule warn"><strong>唯一未完成项：</strong>Lighthouse 分数尚未实测。CI 里已经有 typecheck、registry 同步完整性断言（含 degraded 检测）和 <code>next build</code> 三道阻断门；Lighthouse CI 需要一个可访问的部署地址才能接，等首次部署后补上。其余性能指标（HTML brotli 体积、首屏 JS、静态页数量）均已本机实测，见上表。</div>
+
+<div class="rule"><strong>与计划的两处偏差（据实记录）：</strong>其一，首屏 JS 目标 90KB 未达成——Next 15 + React 19 的共享运行时基线就是 102KB，单页增量已压到 4KB 以内，这是框架下限而非实现问题；其二，PRD §12 的 <code>--profile</code> 命令按 C1 裁定弃用，Quickstart 页面改为从上游 README 抽取，并在抽取器中加了一条断言：命令里再出现 <code>--profile</code> 直接构建失败。</div>
+
+<div class="rule"><strong>M2 验收方式（仍未执行）：</strong>找一位没读过 README 的工程师，只看首页，回答 PRD §26 的七个问题——rd-skills 是什么、与 Skill 合集的区别、三层 Skill 关系、为什么需要独立 Review、Evidence 为什么重要、支持哪些 Host、怎么开始。答不出的那一问，对应的段落就是设计失败，改那一段而不是加一段。</div>
+
+<h2 id="s11"><span class="num">11</span><span>已确认的三项决策</span></h2>
+<p class="sec-note">下列决策已拍板，作为实施依据；后续变更需要同步修订本文档。</p>
+<div class="stack">
+  <div class="q">
+    <h4><span class="qid">A</span>语言策略 · 英文单语 <span class="chip warn">已修订</span></h4>
+    <p>初次决策为「英文界面 + 中文 <code>/guide</code>」，已按后续要求修订：<strong>官网本身就是用来替代旧版中文指南的</strong>，因此 <code>/guide</code> 路由与 <code>public/guide/</code> 静态件一并移除，站点为英文单语。</p>
+    <p class="rec"><b>修订后的实施</b> 深度内容改由 <code>/docs</code> 承担：上游 <code>docs/*.md</code> 在构建期渲染为 HTML，站内直接阅读，正文内的相对链接自动改写为站内路由（指向已渲染的文档）或 GitHub blob（指向未渲染的文件）。<code>MARKETPLACE_CATALOG.md</code>（160KB 生成清单）保持外链。</p>
+  </div>
+  <div class="q">
+    <h4><span class="qid">B</span>数据接入 · git submodule</h4>
+    <p>以 submodule 引入 <code>machenjie/rd-skills</code>，构建期直接读取本地 registry 文件，不依赖 GitHub API。</p>
+    <p class="rec"><b>已核实</b> 上游仓库可达，<code>src/registry/</code> 下有 control / professional / foundation / domain 四份 registry；字段与 §3 的 schema 基本一一对应（<code>trigger_signals</code>、<code>anti_trigger_signals</code>、<code>required_inputs</code>、<code>output_contract</code>、<code>layer3_candidates</code>、<code>reference_index</code>、<code>role_support</code>）。skill 的一句话描述取自各 <code>SKILL.md</code> 的 frontmatter <code>description</code>。目录实测：25 Professional / 13 Domain / 1 Control。锁定 ref：<code>codex/improve_token_usage_quality</code>（v22 指南同步的分支）。</p>
+  </div>
+  <div class="q">
+    <h4><span class="qid">D</span>上手体验 · 安装向导 <span class="chip info">新增</span></h4>
+    <p>目标是让普通开发者最快上手，因此 <code>/quickstart</code> 不再只是罗列 README 命令，而是一个向导：选 agent（5 个）与 scope，实时生成可复制的四到五条命令，并显示文件将落在哪个目录、该 host 是否有原生 agent profile。</p>
+    <p class="rec"><b>数据来源</b> 选项与路径全部从安装器源码抽取（<code>SOURCE_SKILL_ROOTS</code>、<code>SOURCE_PROFILE_ROOTS</code>、<code>DEFAULT_SKILL_TARGETS</code>、<code>PROJECT_SKILL_SUBPATHS</code>，以及 <code>quickstart.py</code> 的 <code>AGENTS</code> / <code>SCOPES</code>），因此向导不可能给出 CLI 会拒绝的组合。另加一条断言：README 列出的 host 若不在安装器接受范围内，构建失败。</p>
+  </div>
+  <div class="q">
+    <h4><span class="qid">C</span>首期范围 · 全量 M0–M5</h4>
+    <p>六条路由一次到位，外加 <code>/guide</code>。</p>
+    <p class="rec"><b>实施顺序</b> 仍按 M0 → M5 推进，每个里程碑独立可部署；M2 的七问验收不因全量范围而放宽。</p>
+  </div>
+</div>
+
+<footer>
+  <span>rd-skills 官网蓝图 · v1</span>
+  <span>来源：prd-v1.md · rd-skills-bilingual-beginner-guide-v22.html · github.com/machenjie/rd-skills</span>
+</footer>
+
+</main>
+</div>

@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Regenerates the dataset from the submodule registry and fails on any
+      # contradiction: an unassigned professional, a Layer 3 candidate that does
+      # not exist, a missing description, a doc link pointing at nothing, or an
+      # install command carrying a flag the project no longer supports.
+      - name: Sync skill data from the upstream registry
+        run: pnpm sync
+
+      - name: Fail if the build fell back to the snapshot
+        run: |
+          node -e '
+            const d = require("./data/skills.generated.json");
+            if (d.degraded) { console.error("dataset is degraded — upstream sync failed"); process.exit(1); }
+            console.log(`ok: ${d.counts.sourceTotal} skills from ${d.sourceCommit.slice(0,8)}`);
+          '
+
+      - run: pnpm typecheck
+      - run: pnpm exec next build

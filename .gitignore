@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+.vercel
+
+# generated at build time from vendor/rd-skills registry
+data/skills.generated.json
