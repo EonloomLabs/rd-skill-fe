@@ -28,7 +28,7 @@ export const DOC_PAGES: DocSpec[] = [
   { file: "OPERATING_MODEL.md", slug: "operating-model", group: "Operating model", route: "docs" },
   { file: "SUBAGENT_MODEL.md", slug: "subagent-model", group: "Operating model", route: "docs" },
   { file: "AI_CONTROL_BOUNDARIES.md", slug: "control-boundaries", group: "Operating model", route: "docs" },
-  { file: "ROUTING_EXAMPLES.md", slug: "routing-examples", group: "Operating model", route: "docs" },
+  { file: "HOOKLESS_ARCHITECTURE.md", slug: "hookless-architecture", group: "Operating model", route: "docs" },
   { file: "SKILL_CONTENT_GOVERNANCE.md", slug: "skill-governance", group: "Authoring skills", route: "docs" },
   { file: "QUALITY_MODEL.md", slug: "quality-model", group: "Authoring skills", route: "docs" },
   { file: "MARKETPLACE.md", slug: "marketplace", group: "Authoring skills", route: "docs" },

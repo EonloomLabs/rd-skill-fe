@@ -109,6 +109,17 @@ export interface HostSetup {
   installable: boolean;
 }
 
+/** One row of the README's host surface table. */
+export interface HostSurface {
+  /** installer agent id this row describes, when one matches */
+  agent: string | null;
+  host: string;
+  artifacts: string;
+  invocation: string;
+  workflow: string;
+  limit: string;
+}
+
 export interface Quickstart {
   /** shell blocks from the upstream README "Start" section, in order */
   install: QuickstartBlock[];
@@ -117,6 +128,8 @@ export interface Quickstart {
   hosts: string[];
   /** per-host install matrix, read from the installer source */
   setup: HostSetup[];
+  /** artifact delivery / invocation / workflow, from the README table */
+  surfaces: HostSurface[];
   /** scopes the CLI accepts at all */
   scopes: string[];
   sourceUrl: string;

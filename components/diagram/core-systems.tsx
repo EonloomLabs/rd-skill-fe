@@ -1,4 +1,4 @@
-import { CORE_SYSTEMS } from "@/content/model";
+import { CORE_SYSTEMS, PRIORITIES } from "@/content/model";
 
 export function CoreSystems() {
   return (
@@ -27,13 +27,24 @@ export function CoreSystems() {
         ))}
       </div>
 
-      <div className="mt-3 grid gap-3 lg:grid-cols-3">
-        <div aria-hidden="true" className="hidden lg:block" />
-        <p className="rounded-xl border border-accent-line bg-accent-soft px-6 py-4 text-center text-[0.875rem] text-ink">
-          All three constrain{" "}
-          <span className="ident text-accent">one engineering task</span>, at the same time.
-        </p>
-        <div aria-hidden="true" className="hidden lg:block" />
+      <div className="mt-3 rounded-xl border border-line bg-surface px-6 py-5">
+        <p className="label text-muted">When they conflict, this is the order</p>
+        <ol className="mt-3 flex list-none flex-wrap items-center gap-x-2 gap-y-2 p-0">
+          {PRIORITIES.map((priority, index) => (
+            <li key={priority} className="flex items-center gap-2">
+              <span
+                className={`text-[0.875rem] ${index === 0 ? "font-medium text-ink" : "text-muted"}`}
+              >
+                {priority}
+              </span>
+              {index < PRIORITIES.length - 1 ? (
+                <span aria-hidden="true" className="text-muted">
+                  &rsaquo;
+                </span>
+              ) : null}
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );

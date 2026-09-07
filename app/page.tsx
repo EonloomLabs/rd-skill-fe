@@ -2,11 +2,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { DEMO, HERO, OPEN_SOURCE } from "@/content/model";
-import { AssuranceLadder } from "@/components/diagram/assurance-ladder";
 import { CompareColumns } from "@/components/diagram/compare-columns";
 import { CoreSystems } from "@/components/diagram/core-systems";
-import { EvidenceTrack } from "@/components/diagram/evidence-track";
+import { EvidencePillars } from "@/components/diagram/evidence-pillars";
+import { HooklessBoundary } from "@/components/diagram/hookless-boundary";
 import { HostMatrix } from "@/components/diagram/host-matrix";
+import { RiskDistinctions } from "@/components/diagram/risk-distinctions";
+import { WorkPaths } from "@/components/diagram/work-paths";
 import { PlaneStack } from "@/components/diagram/plane-stack";
 import { RoleRelay } from "@/components/diagram/role-relay";
 import { SkillTree } from "@/components/diagram/skill-tree";
@@ -16,7 +18,7 @@ import { TaskLifecycle, type LifecycleLine } from "@/components/terminal/task-li
 import { SkillCard } from "@/components/skills/skill-card";
 import { Section } from "@/components/ui/section";
 import { StatGrid } from "@/components/ui/stat-grid";
-import { EVIDENCE_DIMENSIONS } from "@/content/model";
+import { CHANGE_RULES } from "@/content/model";
 import { SITE } from "@/lib/site";
 import {
   getCounts,
@@ -157,10 +159,20 @@ export default function Home() {
       <Section
         id="how"
         eyebrow="How it works"
-        title="One request. A controlled engineering path."
-        lead="Classification happens once. Everything after it consumes that decision rather than re-deriving it."
+        title="One request. Seven steps. Two optional branches."
+        lead="This is the whole ordinary path. There is no mandatory brief, task contract, handoff or review standing in front of it — those are added only when the engineering facts call for them."
       >
         <StepsTimeline />
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold tracking-[-0.02em]">Added only on demand</h3>
+          <p className="mt-2 max-w-[68ch] text-[0.9375rem] text-muted">
+            Depth is not chosen by a level or a file count. It is chosen by whether an unresolved
+            question would actually change the implementation.
+          </p>
+          <div className="mt-6">
+            <WorkPaths />
+          </div>
+        </div>
       </Section>
 
       {/* -------------------------------------------------- six-plane arch */}
@@ -180,6 +192,16 @@ export default function Home() {
             Read the full architecture →
           </Link>
         </p>
+      </Section>
+
+      {/* ------------------------------------------------------- hookless */}
+      <Section
+        id="hookless"
+        eyebrow="Boundary"
+        title="A control plane that adds no runtime of its own."
+        lead="rd-skills is non-intercepting and host-native. It ships prompts, profiles, knowledge and markdown — not a shadow execution environment sitting between you and your agent."
+      >
+        <HooklessBoundary />
       </Section>
 
       {/* ---------------------------------------------------- agent roles */}
@@ -251,38 +273,43 @@ export default function Home() {
         id="evidence"
         tone="surface"
         eyebrow="Evidence"
-        title="Completion is a claim. Evidence makes it believable."
-        lead="A green test suite is not automatically proof of correctness. Evidence has to cover the actual claim being made, and it has to have survived the last edit."
+        title="A result is only current if nothing has changed since."
+        lead="There is no mandatory evidence ledger. What remains is the part that was always doing the work: read the source now, validate after the last edit, and state plainly what you could not prove."
       >
-        <EvidenceTrack />
-        <dl className="mt-3 grid gap-3 md:grid-cols-4">
-          {EVIDENCE_DIMENSIONS.map((dimension) => (
-            <div key={dimension.name} className="rounded-xl border border-line bg-surface p-5">
-              <dt className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{dimension.name}</dt>
-              <dd className="mt-2 text-[0.8125rem] leading-relaxed text-muted">{dimension.blurb}</dd>
-            </div>
-          ))}
-        </dl>
+        <EvidencePillars />
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold tracking-[-0.02em]">And three rules that keep the change small</h3>
+          <dl className="mt-6 grid gap-3 md:grid-cols-3">
+            {CHANGE_RULES.map((rule) => (
+              <div key={rule.name} className="rounded-xl border border-line bg-surface p-6">
+                <dt className="text-[0.9375rem] font-semibold leading-snug tracking-[-0.01em]">
+                  {rule.name}
+                </dt>
+                <dd className="mt-2.5 text-[0.8125rem] leading-relaxed text-muted">{rule.blurb}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </Section>
 
       {/* ------------------------------------------------ assurance + hosts */}
       <Section
         id="assurance"
-        eyebrow="Assurance and hosts"
-        title="Assurance strength, then honest host capability."
-        lead="Execution level says how much proof a task needs — it is not a phase of the workflow. Host support says what each agent host can actually do, including where it cannot."
+        eyebrow="Risk and hosts"
+        title="Risk is reachability, not vocabulary."
+        lead="There is no level ladder to climb. Risk handling turns on five distinctions that are easy to collapse — and on what each host surface can actually do."
       >
-        <AssuranceLadder />
-        <div className="mt-10">
+        <RiskDistinctions />
+        <div className="mt-12">
           <h3 className="text-xl font-semibold tracking-[-0.02em]">
-            One engineering model. Multiple agent hosts.
+            One engineering model. Several host surfaces.
           </h3>
-          <p className="mt-2 max-w-[64ch] text-[0.9375rem] text-muted">
-            rd-skills projects the control model into each host&apos;s available capabilities. It
-            does not claim they are equivalent.
+          <p className="mt-2 max-w-[66ch] text-[0.9375rem] text-muted">
+            rd-skills projects the control model onto what each host actually supports, and says so
+            where a surface falls short.
           </p>
           <div className="mt-6">
-            <HostMatrix />
+            <HostMatrix surfaces={quickstart.surfaces} />
           </div>
         </div>
       </Section>
@@ -292,8 +319,8 @@ export default function Home() {
         id="quickstart"
         tone="surface"
         eyebrow="Quickstart"
-        title="Install it, then submit one bounded task."
-        lead="One runtime, no profile flag to choose. These commands are extracted from the repository at build time, so they cannot drift from what the project actually supports — and the setup page turns them into the exact lines for your agent and scope."
+        title="Two commands, then ask in plain language."
+        lead="One runtime, no profile flag to choose. These commands come out of the repository at build time, so they cannot drift from what the project actually supports — and the setup page turns them into the exact lines for your agent and scope."
       >
         <div className="grid gap-3 lg:grid-cols-2 [&>*]:min-w-0">
           <div className="flex flex-col gap-3">
@@ -302,17 +329,17 @@ export default function Home() {
                 key={block.code}
                 code={block.code}
                 step={String(index + 1).padStart(2, "0")}
-                label={["Install", "Preview the installation", "Install and check"][index] ?? "Run"}
+                label="Build, install and check"
+                {...(index === 0 ? {} : {})}
               />
             ))}
           </div>
           <div className="min-w-0">
-            <CommandBlock code={quickstart.firstTask} label="Submit your first task" step="04" />
+            <CommandBlock code={quickstart.firstTask} label="Your first task" step="02" />
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-muted">
-              A bounded implementation should produce one primary professional skill, an
-              implementation by a task agent, validation after the final edit, an independent
-              review, and a handoff listing changed files, results, unverified scope and residual
-              risk.
+              You do not need to investigate the repository first. Add paths, acceptance criteria or
+              a test command when you already know them; otherwise describe the problem and let the
+              task agent find the owner, the tests and the callers.
             </p>
             <p className="mt-5">
               <Link

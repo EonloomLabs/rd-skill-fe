@@ -262,10 +262,11 @@ footer{
   <div class="rail-brand">
     <span class="mark">Website Plan v1</span>
     <span class="name">rd-skills 官网蓝图</span>
-    <span class="sub">依据 prd-v1.md 与 bilingual-guide v22 编制</span>
+    <span class="sub">依据 prd-v1.md 编制 · 已同步 bilingual-guide V24</span>
   </div>
   <div class="toc">
     <div class="toc-group">对齐</div>
+    <a href="#s0"><span class="n">00</span><span>V24 模型修订</span></a>
     <a href="#s1"><span class="n">01</span><span>输入核对与冲突裁定</span></a>
     <a href="#s2"><span class="n">02</span><span>产品策略与信息架构</span></a>
     <div class="toc-group">工程</div>
@@ -308,6 +309,25 @@ footer{
   </div>
   <p style="font-size:12.5px;color:var(--muted);margin:12px 0 0;max-width:none">上列数字现由 <code>scripts/sync-rd-skills.ts</code> 在构建期从上游 registry 计算得出，组件中没有任何硬编码。实测结果与 v22 指南完全一致：189 source skills = 1 Control + 25 Professional + 150 Foundation + 13 Domain；154 JIT = 141 Product Foundation + 13 Domain。</p>
 </div>
+
+<h2 id="s0"><span class="num">00</span><span>V24 模型修订</span></h2>
+<p class="sec-note">本方案初版依据指南 V22 编写。上游随后发布 V24，并 force-push 了分支（<code>9729eb0c</code> → <code>46ae30ec</code>）。V24 不是数字更新，而是运行模型的改版，站点内容已按新模型重写。</p>
+<div class="scroller">
+<table>
+  <thead><tr><th>V22（初版依据）</th><th>V24（当前）</th><th>站点处理</th></tr></thead>
+  <tbody>
+    <tr><td>Execution Level L1–L5 保证阶梯</td><td><strong>没有固定流程等级</strong>；不用 risk score / severity ladder / 状态机选择深度</td><td>删除 Assurance Ladder，改为 §12 的五组「不能混淆的概念」+ 三项 escalation 同时成立</td></tr>
+    <tr><td>Direct Task / Analyzed Work 两条 Authority 链</td><td><strong>Implementation-first</strong>；Analysis 与 Review 都是按需分支</td><td>删除 Authority Chains，改为 7 步主干 + 两个「按需」分支卡（含「不是触发器」清单）</td></tr>
+    <tr><td>Engineering Brief 是唯一分析权威</td><td>Brief 是<strong>可选</strong>的跨 Agent 沟通物</td><td>Coordination Plane 明确写成 optional analysis / brief / dependency plan / review</td></tr>
+    <tr><td>Evidence Ledger + Scope/Freshness/Proof Limit/Residual Risk 四维</td><td>普通任务<strong>没有强制 Evidence Ledger</strong></td><td>改为三根支柱：Current Source · Fresh Validation · Truthful Limits，另加三条「改动要小」的规则</td></tr>
+    <tr><td>Host 能力矩阵（Profile / Skill loading / Subagent / Review diff / Validation）</td><td><strong>Host Product Surfaces</strong>：Artifact delivery / Live invocation / Full workflow 是三个独立问题</td><td>矩阵重写，并从 README 表格抽取；Codex 的调用前缀是 <code>$</code> 而非 <code>/</code></td></tr>
+    <tr><td>六平面含 Assurance / Host Adapter</td><td>六平面改为 Authority · Knowledge · Role · <strong>Coordination</strong> · <strong>Evidence</strong> · Delivery/QA</td><td>Plane Stack 数据更新</td></tr>
+    <tr><td>—</td><td>新增 <strong>Hookless / Non-intercepting Boundary</strong>：有什么、刻意没有什么</td><td>首页与 /architecture 各加一段，是当前最强的差异化表达</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="rule"><strong>数据管线经受住了这次变更。</strong>上游 README 被整体重写后，抽取器因找不到 <code>## Start</code> 段而失败，构建自动回落到 snapshot 并标记 <code>degraded</code>——没有发布任何失效命令。适配新结构后重新同步，计数不变（189 / 26 / 154 / 163 / 611），但安装命令从三段减为两段，首个任务示例也从五字段合同变成一句自然语言描述。</div>
+<div class="rule warn"><strong>据实记录：</strong><code>docs/ROUTING_EXAMPLES.md</code> 在上游被删除，站内文档集合相应移除该页并新增 <code>docs/HOOKLESS_ARCHITECTURE.md</code>。下文 §01 的 C1–C4 是初版依据 V22 时的裁定，保留以记录判断过程；其中 C3（Execution Level 语义）已被 V24 整体取消，不再适用。</div>
 
 <h2 id="s1"><span class="num">01</span><span>输入核对与冲突裁定</span></h2>
 <p class="sec-note">PRD 与 v22 指南在架构模型上高度一致：六平面、四 Agent、三层 Skill、Evidence Ledger、L1–L5、Host Adapter 全部对得上。但有四处会直接写进页面文案的冲突，必须先裁定，否则官网会发布与真实运行时不符的内容——这本身就违反 rd-skills 自己的 Evidence 原则。</p>

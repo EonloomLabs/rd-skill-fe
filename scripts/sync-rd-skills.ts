@@ -24,6 +24,7 @@ import { readInstallerMatrix } from "./read-installer";
 import { renderDocs } from "./render-docs";
 import type {
   AgentRole,
+  HostSurface,
   Quickstart,
   QuickstartBlock,
   Skill,
@@ -228,10 +229,11 @@ function validate(skills: Skill[], counts: SkillCounts): string[] {
 }
 
 /**
- * Quickstart commands are extracted from the upstream README, never authored
- * here. PRD v1 documented a `--profile recommended` flag that the current
- * runtime no longer accepts; extraction plus the assertions below make it
- * impossible to publish a command the repository does not support.
+ * Quickstart facts are extracted from the upstream README, never authored here.
+ * The README is rewritten between releases, so every assumption below is an
+ * assertion: if a section disappears or a command grows a flag the runtime no
+ * longer accepts, the sync fails and the site falls back to the snapshot rather
+ * than publishing instructions that do not work.
  */
 function loadQuickstart(commit: string): Quickstart {
   const file = path.join(VENDOR, "README.md");
@@ -256,18 +258,53 @@ function loadQuickstart(commit: string): Quickstart {
     return out;
   };
 
-  const startSection = sectionOf("Start");
-  const install = blocksIn(startSection, "Start").filter((b) => b.language === "bash");
-  const firstTaskBlocks = blocksIn(sectionOf("Submit A First Task"), "Submit A First Task");
-  const firstTask = firstTaskBlocks[0]?.code ?? "";
+  const installSection = sectionOf("Install");
+  const install = blocksIn(installSection, "Install").filter((b) => b.language === "bash");
+  const firstTask = blocksIn(sectionOf("First task"), "First task")[0]?.code ?? "";
 
-  const hostSentence = /Supported hosts are ([^.]+)\./.exec(startSection);
+  const hostSection = sectionOf("Supported hosts");
+  const hostSentence = /Supported hosts are ([^.]+)\./.exec(hostSection);
   const hosts = hostSentence
     ? [...hostSentence[1].matchAll(/`([a-z0-9-]+)`/g)].map((m) => m[1])
     : [];
   if (hosts.length === 0) throw new Error("README: could not read the supported host list");
 
-  if (install.length < 2) throw new Error("README: expected at least two bash blocks under Start");
+  // | Host or surface | Artifact delivery | Live Skill invocation | Full workflow | Limit |
+  const matrix = readInstallerMatrix(VENDOR);
+
+  /** "Claude Code" -> claude, "Copilot CLI" -> copilot, "OpenAI API" -> openai-api */
+  const agentFor = (host: string): string | null => {
+    const normalized = host.toLowerCase().replace(/\s+/g, "-");
+    return (
+      matrix.agents.find((agent) => normalized === agent) ??
+      matrix.agents.find((agent) => normalized.startsWith(`${agent}-`)) ??
+      matrix.agents.find((agent) => normalized.replace(/-/g, "") === agent.replace(/-/g, "")) ??
+      null
+    );
+  };
+
+  const surfaces: HostSurface[] = hostSection
+    .split("\n")
+    .filter((line) => line.trim().startsWith("|"))
+    .map((line) =>
+      line
+        .trim()
+        .replace(/^\||\|$/g, "")
+        .split("|")
+        .map((cell) => cell.trim().replace(/`/g, "")),
+    )
+    .filter((cells) => cells.length === 5 && !/^-+$/.test(cells[0]) && cells[0] !== "Host or surface")
+    .map(([host, artifacts, invocation, workflow, limit]) => ({
+      agent: agentFor(host),
+      host,
+      artifacts,
+      invocation,
+      workflow,
+      limit,
+    }));
+  if (surfaces.length === 0) throw new Error("README: could not read the host surface table");
+
+  if (install.length === 0) throw new Error("README: no bash block under Install");
   for (const block of install) {
     for (const line of block.code.split("\n")) {
       if (line.trim() && !line.trim().startsWith("python3")) {
@@ -278,16 +315,18 @@ function loadQuickstart(commit: string): Quickstart {
       throw new Error("README: install command still carries --profile; update the site copy");
     }
   }
-  if (!firstTask.includes("/engineering-control-plane")) {
-    throw new Error("README: first-task block does not invoke /engineering-control-plane");
+  if (!firstTask.includes("engineering-control-plane")) {
+    throw new Error("README: first-task block does not invoke engineering-control-plane");
   }
 
-  const matrix = readInstallerMatrix(VENDOR);
+  const unmapped = surfaces.filter((surface) => !surface.agent).map((surface) => surface.host);
+  if (unmapped.length > 0) {
+    throw new Error(`README host surface rows do not map to an installer agent: ${unmapped.join(", ")}`);
+  }
+
   const missing = hosts.filter((host) => !matrix.agents.includes(host));
   if (missing.length > 0) {
-    throw new Error(
-      `README lists hosts the installer does not accept: ${missing.join(", ")}`,
-    );
+    throw new Error(`README lists hosts the installer does not accept: ${missing.join(", ")}`);
   }
 
   return {
@@ -295,6 +334,7 @@ function loadQuickstart(commit: string): Quickstart {
     firstTask,
     hosts,
     setup: matrix.setup,
+    surfaces,
     scopes: matrix.scopes,
     sourceUrl: `${REPO}/blob/${commit}/README.md`,
   };

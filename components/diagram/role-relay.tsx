@@ -1,10 +1,9 @@
-import { ArrowRight } from "lucide-react";
-
 import { ROLES } from "@/content/model";
 
 /**
- * Four agents. The "cannot" list is the product claim — an agent that could
- * review its own change would make the whole model decorative.
+ * Four profiles with fixed tool boundaries — deliberately not a fixed order.
+ * The "cannot" list is the product claim: an agent that could review its own
+ * change would make the whole model decorative.
  */
 export function RoleRelay() {
   return (
@@ -15,6 +14,7 @@ export function RoleRelay() {
             <div className="flex items-baseline gap-2 border-b border-line-soft px-5 py-4">
               <span className="ident text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
               <h3 className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{role.name}</h3>
+              <span className="ml-auto text-[0.75rem] text-muted">{role.summary}</span>
             </div>
             <div className="flex-1 px-5 py-4">
               <p className="label text-muted">Can</p>
@@ -42,17 +42,9 @@ export function RoleRelay() {
         ))}
       </ol>
 
-      <p className="mt-5 flex flex-wrap items-center gap-2 text-[0.8125rem] text-muted">
-        <span className="ident text-ink-2">Main</span>
-        <ArrowRight size={13} aria-hidden="true" />
-        <span className="ident text-ink-2">Analysis</span>
-        <ArrowRight size={13} aria-hidden="true" />
-        <span className="ident text-ink-2">Task</span>
-        <ArrowRight size={13} aria-hidden="true" />
-        <span className="ident text-ink-2">Review</span>
-        <ArrowRight size={13} aria-hidden="true" />
-        <span className="ident text-ink-2">Closure</span>
-        <span className="ml-1">— but this is not always a fixed linear pipeline.</span>
+      <p className="mt-5 max-w-[74ch] text-[0.8125rem] leading-relaxed text-muted">
+        An implementation request goes straight to the task agent. An unknown local owner, file,
+        test or caller is that agent&apos;s discovery work — not a reason to start analysis.
       </p>
     </div>
   );

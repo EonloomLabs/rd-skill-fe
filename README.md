@@ -3,8 +3,15 @@
 The product website for [rd-skills](https://github.com/machenjie/rd-skills), an engineering
 control plane for AI coding agents.
 
-Built from [`prd-v1.md`](prd-v1.md) and the bilingual beginner guide. The design and
-implementation plan is [`website-design-plan-v1.html`](website-design-plan-v1.html).
+Built from [`prd-v1.md`](prd-v1.md) and the bilingual beginner guide, currently synced with
+**V24** of that guide and upstream commit `46ae30ec`. The design and implementation plan is
+[`website-design-plan-v1.html`](website-design-plan-v1.html).
+
+V24 changed the runtime model, not just the numbers: there is no execution-level ladder, no
+mandatory Engineering Brief, and no mandatory independent review. Implementation goes
+straight to the task agent; analysis and review are branches taken when the engineering facts
+require them. Keep that framing when editing copy — see the comment at the top of
+[`content/model.ts`](content/model.ts).
 
 ## Run it
 
@@ -27,7 +34,7 @@ time from the upstream registry. Nothing is hand-maintained here.
 ```
 vendor/rd-skills/src/registry/*.yaml            git submodule, authoritative
 vendor/rd-skills/**/SKILL.md                    one-line descriptions (frontmatter)
-vendor/rd-skills/README.md                      quickstart commands, host list
+vendor/rd-skills/README.md                      install commands, host surface table
 vendor/rd-skills/docs/*.md                      rendered to HTML for on-site reading
 vendor/rd-skills/installers/changeforge_install.py   agent/scope install matrix
 vendor/rd-skills/scripts/quickstart.py          accepted agents and scopes

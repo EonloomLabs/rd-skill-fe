@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { FolderTree, ShieldCheck } from "lucide-react";
 
 import { CommandBlock } from "@/components/terminal/command-block";
-import type { HostSetup } from "@/lib/types";
+import type { HostSetup, HostSurface } from "@/lib/types";
 
 const HOST_LABEL: Record<string, string> = {
   codex: "Codex",
@@ -27,7 +27,17 @@ const PLACEHOLDER = "/absolute/path/to/project";
  * comes from the installer's own agent/scope tables, so the wizard cannot
  * suggest a combination the CLI would reject.
  */
-export function SetupWizard({ hosts, repoUrl }: { hosts: HostSetup[]; repoUrl: string }) {
+export function SetupWizard({
+  hosts,
+  surfaces,
+  firstTask,
+  repoUrl,
+}: {
+  hosts: HostSetup[];
+  surfaces: HostSurface[];
+  firstTask: string;
+  repoUrl: string;
+}) {
   const [agent, setAgent] = useState(hosts[0]?.agent ?? "codex");
   const [scope, setScope] = useState("user");
   const [projectPath, setProjectPath] = useState("");
@@ -55,6 +65,14 @@ export function SetupWizard({ hosts, repoUrl }: { hosts: HostSetup[]; repoUrl: s
     ].join(" ");
     return { preview: `${install} --dry-run`, install, doctor };
   }, [effectiveScope, host, needsTarget, target]);
+
+  const surface = surfaces.find((item) => item.agent === host.agent);
+  const invocation = surface?.invocation ?? "";
+  const hasInvocation = invocation.includes("engineering-control-plane");
+  // The README writes the example for Codex; swap the prefix for other hosts.
+  const request = hasInvocation
+    ? firstTask.replace(/^[$/]engineering-control-plane/, invocation)
+    : firstTask;
 
   const destination = host.installable
     ? needsTarget
@@ -193,6 +211,24 @@ export function SetupWizard({ hosts, repoUrl }: { hosts: HostSetup[]; repoUrl: s
             <CommandBlock step="05" label="Re-check any time" code={commands.doctor} />
           </li>
         ) : null}
+        <li>
+          {hasInvocation ? (
+            <CommandBlock
+              step={host.installable ? "06" : "05"}
+              label={`Ask ${HOST_LABEL[host.agent] ?? host.agent} — invocation is host-specific`}
+              code={request}
+            />
+          ) : (
+            <div className="rounded-xl border border-line bg-surface p-5">
+              <p className="label text-amber">Live invocation</p>
+              <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted">
+                {surface
+                  ? `${surface.host}: ${surface.invocation}. ${surface.limit}.`
+                  : "Not established for this surface."}
+              </p>
+            </div>
+          )}
+        </li>
       </ol>
     </div>
   );

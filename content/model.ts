@@ -1,302 +1,380 @@
 /**
- * Narrative content for the architecture story. Facts here come from the
- * upstream docs (AGENTS.md, docs/OPERATING_MODEL.md) and the v22 bilingual
- * guide. Nothing here duplicates registry data — skill names, counts and
- * contracts are always read from data/skills.generated.json.
+ * Narrative content for the architecture story, synced with the v24 runtime
+ * model (bilingual guide V24 + docs/HOOKLESS_ARCHITECTURE.md + AGENTS.md).
+ *
+ * Nothing here duplicates registry data — skill names, counts, contracts, host
+ * surfaces and install commands are always read from
+ * data/skills.generated.json.
+ *
+ * v24 removed the fixed process hierarchy: there is no execution-level ladder,
+ * no mandatory Engineering Brief, and no mandatory independent review. Depth
+ * comes from the engineering facts of the task. Keep that framing intact.
  */
 
 export const HERO = {
   eyebrow: "Engineering control plane for AI coding agents",
-  headline: "Make coding agents work like an engineering system.",
-  sub: "rd-skills routes every task to the right professional judgment, loads deep expertise only when needed, separates implementation from review, and requires current evidence before completion.",
+  headline: "Turn a plain request into a change you can trust.",
+  sub: "rd-skills routes each task to the right professional judgment, lets the implementer find the real owner, requires validation after the final edit, and brings in analysis or an independent reviewer only when the engineering facts call for it.",
 } as const;
 
-/** The single spine the whole site is organised around. */
+/** The spine, in the repository's own words. */
 export const SPINE = [
-  "Intent",
-  "Boundary",
-  "Owner",
-  "JIT expertise",
-  "Execution",
-  "Validation",
-  "Review",
-  "Evidence",
-  "Closure",
+  "Request",
+  "Repository boundary",
+  "Professional guidance",
+  "The right owner",
+  "Verify actual risk",
+  "Independent check",
+  "Current results",
 ] as const;
 
 export const TYPICAL_AGENT = {
-  title: "A typical coding agent",
-  flow: ["Prompt", "Search", "Edit", "Test", "Done"],
+  title: "Ordinary AI coding",
+  flow: ["Request", "Find code", "Edit", "Run a test", "Done"],
   failures: [
-    "Unclear ownership",
-    "Scope drift",
-    "Premature abstraction",
-    "Insufficient validation",
-    "Self-review bias",
-    "Stale evidence",
-    "Unverified completion",
+    "Edits a caller instead of the owner",
+    "Adds an abstraction nothing needs yet",
+    "Tests something other than the change",
+    "Validates before the last edit",
+    "Reviews its own work",
+    "Reports a pass it cannot support",
+    "Leaves the unknown unstated",
   ],
 } as const;
 
 export const CONTROLLED_PATH = {
   title: "rd-skills",
   flow: [
-    "Intent",
-    "Decision boundary",
-    "Professional owner",
-    "Targeted expertise",
-    "Bounded implementation",
-    "Validation",
-    "Independent review",
-    "Evidence-backed closure",
+    "Request",
+    "Repository boundary",
+    "Professional guidance",
+    "The right owner",
+    "Verify actual risk",
+    "Independent check",
+    "Current results",
   ],
   guarantees: [
-    "Exactly one owner per task",
-    "Scope fixed by contract",
-    "Abstraction needs a proven consumer",
-    "Validation after the final edit",
-    "Review cannot be self-issued",
-    "Evidence invalidated by later edits",
-    "Closure requires covered claims",
+    "Reads the current code before changing it",
+    "Finds the owning code and its consumers",
+    "Applies guidance suited to the task and its risks",
+    "Makes the smallest complete change it can support",
+    "Validates after the final edit",
+    "A separate reviewer inspects the actual change",
+    "Reports files, results, limits and open decisions",
   ],
 } as const;
 
+/** Figure 1 in the v24 guide. */
 export const CORE_SYSTEMS = [
   {
-    id: "boundary",
-    name: "Decision Boundary",
-    question: "What may change?",
+    id: "implementation-first",
+    name: "Implementation first",
+    question: "What is the simplest correct path?",
     blurb:
-      "Compiles user intent into an explicit path, authority, scope, acceptance, task contract and stop conditions.",
-    items: ["Path", "Authority", "Scope", "Acceptance", "Task Contract", "Stop Conditions"],
+      "The default route for an implementation request is the task agent: inspect, edit, self-check, then fresh targeted validation. No mandatory brief, contract, handoff or review stands in front of it.",
+    items: ["Inspect", "Edit", "Self-check", "Fresh validation", "Report"],
   },
   {
-    id: "expertise",
-    name: "Expertise Injection",
-    question: "How is it done professionally?",
+    id: "professional-knowledge",
+    name: "Professional knowledge",
+    question: "Whose judgment does this need?",
     blurb:
-      "Selects exactly one Primary Professional, then adds only the Layer 3 expertise the current evidence justifies.",
+      "Each assignment gets exactly one primary professional, then zero to three Layer 3 skills and only the references the current decision actually requires.",
     items: ["Primary Professional", "Foundation", "Domain", "Targeted References"],
   },
   {
-    id: "assurance",
-    name: "Assurance Controller",
-    question: "Why should anyone believe it is done?",
+    id: "evidence-driven-depth",
+    name: "Evidence-driven depth",
+    question: "What would justify going deeper?",
     blurb:
-      "Sets assurance strength, requires fresh validation, keeps an evidence ledger, and gates closure on independent review.",
-    items: ["Execution Level", "Validation", "Evidence Freshness", "Review Boundary", "Closure"],
+      "Analysis, a brief, a dependency plan and independent review are added because a real question or risk demands them — never because of a level, a file count or a fixed state machine.",
+    items: ["Analysis", "Brief", "Dependency Plan", "Independent Review"],
   },
 ] as const;
 
+/** The priority order the runtime resolves conflicts by. */
+export const PRIORITIES = [
+  "Engineering correctness",
+  "Professional routing accuracy",
+  "Quality of professional judgment",
+  "Context and token cost",
+  "Execution time",
+] as const;
+
+/** Figure 2: one ordinary implementation task. */
 export const STEPS = [
   {
     n: "01",
     title: "Request",
-    body: "The user states a goal. Nothing is assumed about scope yet.",
+    body: "You describe the result you want, in plain language. You do not need to investigate the repository first.",
   },
   {
     n: "02",
-    title: "Classify once",
-    body: "One classification decides the path: Direct Task when the facts and boundary are already established, Analyzed Work when owner, placement, verification or material risk is unknown.",
+    title: "Pick the professional",
+    body: "Main selects one primary professional and zero to three Layer 3 skills. It never reads your business code itself.",
   },
   {
     n: "03",
-    title: "Authority",
-    body: "Direct Task produces a Direct Task Contract. Analyzed Work produces an Engineering Brief — the single runtime analysis authority that later artifacts may project but never redefine.",
+    title: "Inspect",
+    body: "The task agent finds the owner, the tests and the callers by itself. An unknown local file is discovery work, not a reason to escalate.",
   },
   {
     n: "04",
-    title: "Professional owner",
-    body: "Every task gets exactly one Primary Professional. Ownership is by engineering decision, not by language or framework.",
+    title: "Edit",
+    body: "The smallest complete change that supports the request. Read scope can widen; write scope cannot.",
   },
   {
     n: "05",
-    title: "JIT expertise",
-    body: "A selector adds at most three Layer 3 skills, plus the references whose load conditions actually fire.",
+    title: "Self-check",
+    body: "Behaviour, impact and structure, checked against what the change was supposed to do.",
   },
   {
     n: "06",
-    title: "Execute and validate",
-    body: "The Task Agent changes code inside the contract, then runs targeted validation after the final edit.",
+    title: "Fresh validation",
+    body: "Run after the final material edit. A later edit makes earlier proof stale, so it does not count.",
   },
   {
     n: "07",
-    title: "Independent review",
-    body: "A Review Agent reads the exact change, the changed files and the current validation. It cannot repair what it finds.",
+    title: "Report",
+    body: "Changed files, results, proof limits, and any decision still waiting on you.",
+  },
+] as const;
+
+/** The two branches that are taken only when the facts require them. */
+export const BRANCHES = [
+  {
+    id: "analysis",
+    name: "Analysis",
+    tone: "violet",
+    when: "A decision that would change the implementation is still unresolved.",
+    yes: [
+      "Competing owners",
+      "Unclear invariant",
+      "Shared consumers or contracts",
+      "Concurrency, transaction, recovery",
+      "Migration, authority, integration",
+    ],
+    no: [
+      "Unknown local file, owner, test or caller",
+      "A small question the implementation can answer",
+    ],
   },
   {
-    n: "08",
-    title: "Evidence-backed closure",
-    body: "Completed is allowed only when current evidence covers the completion claim.",
+    id: "review",
+    name: "Independent review",
+    tone: "green",
+    when: "You ask for it, or independent judgment measurably raises confidence.",
+    yes: [
+      "You requested a review",
+      "A material semantic question remains in the current source",
+      "An important failure is poorly covered by local tests",
+    ],
+    no: ["File count", "Task count", "Number of edits", "Finishing, by itself"],
   },
 ] as const;
 
 export const PLANES = [
   {
     id: "authority",
-    name: "Authority Plane",
+    name: "Authority",
     tone: "accent",
-    blurb: "What is allowed to change, and who decided.",
-    parts: ["Core Contract", "Direct Task Contract", "Engineering Brief", "Task Contract", "Completion"],
+    blurb: "What the user and the host actually permit.",
+    parts: ["User authorization", "Host enforcement", "Write/effect boundaries", "Environment risk calibration"],
   },
   {
     id: "knowledge",
-    name: "Knowledge Plane",
+    name: "Knowledge",
     tone: "violet",
     blurb: "Which expertise is in context, and why it was loaded.",
     parts: ["Control", "Professional", "Foundation", "Domain", "Targeted References"],
   },
   {
     id: "role",
-    name: "Role Plane",
+    name: "Role",
     tone: "accent",
-    blurb: "Who may read, write, review and close.",
+    blurb: "Fixed tool boundaries — not a fixed order.",
     parts: ["Main", "Analysis", "Task", "Review"],
   },
   {
-    id: "assurance",
-    name: "Assurance Plane",
+    id: "coordination",
+    name: "Coordination",
     tone: "green",
-    blurb: "How strong the proof must be before a claim stands.",
-    parts: ["Execution Level", "Validation", "Evidence Ledger", "Review Boundary", "Scoped Freshness"],
+    blurb: "What gets added, and only when it is needed.",
+    parts: ["Implementation-first", "Optional analysis", "Optional brief", "Optional dependency plan", "Optional review"],
   },
   {
-    id: "host",
-    name: "Host Adapter Plane",
+    id: "evidence",
+    name: "Evidence",
     tone: "amber",
-    blurb: "How the model projects onto each agent host's real capabilities.",
-    parts: ["Codex", "Claude", "Copilot", "Cline", "OpenAI API"],
+    blurb: "What can be re-checked by whoever reads it next.",
+    parts: ["Current source", "Actual tool results", "Post-final-edit validation", "Diff when needed", "Proof limits"],
   },
   {
-    id: "build",
-    name: "Build / QA Plane",
+    id: "delivery",
+    name: "Delivery / QA",
     tone: "muted",
-    blurb: "How the runtime is compiled and proven before release.",
-    parts: ["Registry", "build.py", "Validation", "Routing evals", "Professional evals", "Release evidence"],
+    blurb: "How the runtime is built, shipped and proven.",
+    parts: ["Host product surfaces", "Build / package / install", "Routing, context and professional validators"],
   },
 ] as const;
+
+/** Section 4.2: what a non-intercepting control plane is, and is not. */
+export const HOOKLESS = {
+  has: [
+    "A control prompt",
+    "Four agent profiles",
+    "Three layers of professional knowledge",
+    "Optional markdown artifacts",
+    "Validation after the final edit",
+    "Independent review on demand",
+  ],
+  hasNot: [
+    "Executable hooks",
+    "An interception bridge",
+    "A second sandbox",
+    "A private runtime evidence store",
+    "An internal task-state engine",
+  ],
+  why: "Control rules stay inspectable, host permission boundaries stay explicit, and the agent is never pulled away from the engineering task in order to satisfy an internal protocol.",
+} as const;
 
 export const ROLES = [
   {
     id: "main",
-    name: "Main Control Agent",
+    name: "Main",
     role: "main-control-agent",
-    can: ["Classify the request", "Assign path and profile", "Compute execution level", "Route review, repair and closure"],
-    cannot: ["Read target source", "Implement", "Review"],
+    summary: "Dispatch only.",
+    can: ["Select the expertise", "Dispatch within the authorized scope", "Pass real results through"],
+    cannot: ["Read the target source", "Edit", "Execute", "Review"],
   },
   {
     id: "analysis",
-    name: "Analysis Agent",
+    name: "Analysis",
     role: "analysis-agent",
-    can: ["Read source, tests and external evidence", "Resolve ambiguity", "Produce the Engineering Brief"],
-    cannot: ["Edit code", "Issue the final review"],
+    summary: "Read-only, on demand.",
+    can: [
+      "Resolve one source-backed engineering question",
+      "Read, search and consult external primary sources",
+      "Hand an executable observation back to be run",
+    ],
+    cannot: ["Edit or mutate", "Dispatch", "Issue the independent review"],
   },
   {
     id: "task",
-    name: "Task Agent",
+    name: "Task",
     role: "task-agent",
-    can: ["Implement or repair one bounded task", "Run targeted validation after the final edit"],
-    cannot: ["Reroute itself", "Review its own change"],
+    summary: "The default implementer.",
+    can: [
+      "Inspect, implement or repair, self-check",
+      "Locate the owner, tests and callers itself",
+      "Run targeted validation after the final edit",
+    ],
+    cannot: ["Dispatch or reroute", "Independently review itself"],
   },
   {
     id: "review",
-    name: "Review Agent",
+    name: "Review",
     role: "review-agent",
-    can: ["Read the exact diff and changed files", "Read current validation", "Report findings"],
-    cannot: ["Edit or repair", "Export the diff on the Task Agent's behalf"],
+    summary: "Independent, when it earns its place.",
+    can: [
+      "Read the current diff or artifact",
+      "Read every changed file, owner, tests and consumers",
+      "Run read-only checks and report findings",
+    ],
+    cannot: ["Edit or repair", "Dispatch", "Read external sources independently"],
   },
 ] as const;
 
-export const EVIDENCE_STATES = [
+/** Section 18: what evidence has to be, in ordinary work. */
+export const EVIDENCE_PILLARS = [
   {
-    id: "unverified",
-    name: "Unverified",
-    tone: "amber",
-    blurb: "A change exists. Nothing yet proves it behaves as claimed.",
-  },
-  {
-    id: "validated",
-    name: "Validated",
+    id: "current-source",
+    name: "Current source",
     tone: "accent",
-    blurb: "Targeted validation ran after the final edit, with a recorded scope.",
+    blurb:
+      "Conclusions about owner, behaviour and consumers come from reading the code now — not from inheriting a summary or trusting a locator.",
   },
   {
-    id: "reviewed",
-    name: "Reviewed",
-    tone: "violet",
-    blurb: "An independent agent read the actual diff and the current evidence.",
-  },
-  {
-    id: "completed",
-    name: "Completed",
+    id: "fresh-validation",
+    name: "Fresh validation",
     tone: "green",
-    blurb: "Current evidence covers the completion claim, with proof limits stated.",
+    blurb:
+      "Affected behaviour is re-verified after the final material edit. A later edit makes the earlier result stale, and stale results are not reported as current.",
+  },
+  {
+    id: "truthful-limits",
+    name: "Truthful limits",
+    tone: "amber",
+    blurb:
+      "Skipped, flaky, unavailable and partial results are reported as they are. Nothing is upgraded into a PASS, and unknown stays unknown.",
   },
 ] as const;
 
-export const EVIDENCE_DIMENSIONS = [
-  { name: "Scope", blurb: "What this evidence actually covers — and what it never touched." },
-  { name: "Freshness", blurb: "Whether it was produced after the final edit. A later edit invalidates it." },
-  { name: "Proof limit", blurb: "What this evidence cannot establish, stated rather than implied." },
-  { name: "Residual risk", blurb: "What remains reachable after the controls that are in place." },
+/** Section 12: five distinctions that keep risk handling honest. */
+export const RISK_DISTINCTIONS = [
+  {
+    left: "Possibility",
+    right: "Reachability",
+    blurb: "Something being conceivable is not the same as a path an actor can actually take.",
+  },
+  {
+    left: "Unknown",
+    right: "Unsafe",
+    blurb: "A gap in knowledge is a reason to look, not evidence that a risk exists.",
+  },
+  {
+    left: "Mutability",
+    right: "Trust boundary",
+    blurb: "Code that can change is not automatically code that crosses a privilege line.",
+  },
+  {
+    left: "Capability",
+    right: "Authorization",
+    blurb: "A host exposing a tool does not authorize destructive, privileged or production effects.",
+  },
+  {
+    left: "Risk category",
+    right: "Material risk",
+    blurb: "A security-sounding word is not itself a finding. Reachable impact is.",
+  },
 ] as const;
 
-export const LEVELS = [
-  { id: "L1", name: "Strict minimal", blurb: "Must satisfy both L1 and L2 eligibility. Non-bypassable controls still apply." },
-  { id: "L2", name: "Bounded and reversible", blurb: "One bounded owner, local scope, reversible forward fix, known non-production verification, no material unknown." },
-  { id: "L3", name: "Default executable task", blurb: "The standard source-backed executable task. This is the default, not an escalation." },
-  { id: "L4", name: "Reachable residual risk", blurb: "Material residual impact remains reachable after existing controls, or an explicit policy floor applies." },
-  { id: "L5", name: "Extra assurance", blurb: "Confirmed critical L4 where additional assurance materially reduces uncertainty." },
+/** Escalation needs all three at once — section 12.1. */
+export const ESCALATION_CONDITIONS = [
+  "A less-trusted actor, input or writer",
+  "A privilege or a sensitive asset",
+  "A reachable path to material impact",
 ] as const;
 
-export type HostSupport = "native" | "prompt" | "supplied" | "unsupported";
+/** Section 13: the rules that keep a change small and honest. */
+export const CHANGE_RULES = [
+  {
+    name: "Read scope widens, write scope does not",
+    blurb:
+      "Finding the real owner and affected consumers can take as much reading as it takes. Discovery never expands what may be written, and destructive, production or privileged effects stay with you and the host.",
+  },
+  {
+    name: "Structure needs a reason that exists today",
+    blurb:
+      "Future reuse, robustness, consistency and safety are not enough on their own to add an abstraction, protocol, validator, factory, adapter or dependency. A current requirement, real variation or an established boundary is.",
+  },
+  {
+    name: "Two failures means change the hypothesis",
+    blurb:
+      "After the same path fails twice, something material has to change — the hypothesis, the evidence, the gap. Renaming the attempt or repeating the same analysis does not reset the retry.",
+  },
+] as const;
 
-export const HOST_CAPABILITIES = ["Profile", "Skill loading", "Subagent", "Review diff", "Validation"] as const;
-
-export const HOSTS: {
-  id: string;
-  name: string;
-  support: Record<(typeof HOST_CAPABILITIES)[number], HostSupport>;
-  note: string;
-}[] = [
-  {
-    id: "codex",
-    name: "Codex",
-    support: { Profile: "native", "Skill loading": "prompt", Subagent: "native", "Review diff": "native", Validation: "native" },
-    note: "Strongest native diff and read-only validation path. Fine-grained tool allowlists are still prompt-enforced.",
-  },
-  {
-    id: "claude",
-    name: "Claude",
-    support: { Profile: "native", "Skill loading": "native", Subagent: "native", "Review diff": "supplied", Validation: "supplied" },
-    note: "Skill loading and subagents are native. Review consumes a supplied diff because there is no verified read-only shell for it.",
-  },
-  {
-    id: "copilot",
-    name: "GitHub Copilot",
-    support: { Profile: "native", "Skill loading": "prompt", Subagent: "native", "Review diff": "supplied", Validation: "supplied" },
-    note: "Review has read and search but no execute, so exact supplied diff delivery matters most here.",
-  },
-  {
-    id: "cline",
-    name: "Cline",
-    support: { Profile: "unsupported", "Skill loading": "unsupported", Subagent: "unsupported", "Review diff": "unsupported", Validation: "unsupported" },
-    note: "The control model is projected through prompts only; none of these capabilities are host-native.",
-  },
-  {
-    id: "openai-api",
-    name: "OpenAI API",
-    support: { Profile: "unsupported", "Skill loading": "unsupported", Subagent: "unsupported", "Review diff": "unsupported", Validation: "unsupported" },
-    note: "Ships as generated top-level skill bundles; the harness around them is yours to build.",
-  },
-];
-
-export const HOST_SUPPORT_LABEL: Record<HostSupport, string> = {
-  native: "Native",
-  prompt: "Prompt-enforced",
-  supplied: "Supplied artifact",
-  unsupported: "Not supported",
-};
+export const OPEN_SOURCE = [
+  { label: "Source", path: "" },
+  { label: "Operating model", path: "blob/master/docs/OPERATING_MODEL.md" },
+  { label: "Hookless architecture", path: "blob/master/docs/HOOKLESS_ARCHITECTURE.md" },
+  { label: "Validation", path: "blob/master/docs/VALIDATION.md" },
+  { label: "Skill governance", path: "blob/master/docs/SKILL_CONTENT_GOVERNANCE.md" },
+  { label: "Contributing", path: "blob/master/CONTRIBUTING.md" },
+  { label: "Governance", path: "blob/master/GOVERNANCE.md" },
+  { label: "Security", path: "blob/master/SECURITY.md" },
+] as const;
 
 /**
  * The hero demo. `skill` values are registry slugs and are resolved at build
@@ -304,81 +382,63 @@ export const HOST_SUPPORT_LABEL: Record<HostSupport, string> = {
  * that does not exist.
  */
 export const DEMO = {
-  request:
-    "Add retry support to payment settlement without changing its public API.",
+  request: "Payment callbacks sometimes create the same order twice. Find the cause and fix it.",
   lines: [
     {
-      stage: "classify",
-      value: "analyzed work",
-      note: "owner, duplicate-effect path and proof are unknown",
-      tone: "amber",
-      skill: null,
-    },
-    {
-      stage: "authority",
-      value: "Engineering Brief",
-      note: "the single runtime analysis authority",
-      tone: "accent",
-      skill: null,
-    },
-    {
-      stage: "owner",
+      stage: "route",
       value: "backend-change-builder",
-      note: "exactly one primary professional",
+      note: "one primary professional, chosen once",
       tone: "accent",
       skill: "backend-change-builder",
     },
     {
       stage: "layer 3",
       value: "idempotency-retry-design",
-      note: "+ transaction-consistency",
+      note: "+ transaction-consistency, selector-authorised",
       tone: "violet",
       skill: "idempotency-retry-design",
     },
     {
-      stage: "execute",
-      value: "services/settlement/**",
-      note: "inside the task contract",
+      stage: "inspect",
+      value: "owner, tests, callers",
+      note: "task agent reads current source itself",
+      tone: "muted",
+      skill: null,
+    },
+    {
+      stage: "analysis",
+      value: "duplicate-effect path",
+      note: "on demand: the invariant changes the fix",
+      tone: "violet",
+      skill: null,
+    },
+    {
+      stage: "edit",
+      value: "smallest complete change",
+      note: "read scope widened; write scope did not",
       tone: "muted",
       skill: null,
     },
     {
       stage: "validate",
-      value: "targeted tests",
-      note: "run after the final edit",
+      value: "RED reproduces, then GREEN",
+      note: "run after the final material edit",
       tone: "green",
       skill: null,
     },
     {
       stage: "review",
       value: "ai-code-review-refactor",
-      note: "independent; reads the exact diff",
-      tone: "violet",
+      note: "on demand: money invariant is hard to cover locally",
+      tone: "green",
       skill: "ai-code-review-refactor",
     },
     {
-      stage: "evidence",
-      value: "fresh",
-      note: "covers the duplicate-delivery claim",
-      tone: "green",
-      skill: null,
-    },
-    {
-      stage: "closure",
-      value: "completed",
-      note: "proof limit recorded",
-      tone: "green",
+      stage: "report",
+      value: "files, results, proof limit",
+      note: "production replay behaviour stays unproven",
+      tone: "amber",
       skill: null,
     },
   ],
 } as const;
-
-export const OPEN_SOURCE = [
-  { label: "Source", path: "" },
-  { label: "Operating model", path: "blob/master/docs/OPERATING_MODEL.md" },
-  { label: "Validation", path: "blob/master/docs/VALIDATION.md" },
-  { label: "Skill governance", path: "blob/master/docs/SKILL_CONTENT_GOVERNANCE.md" },
-  { label: "Contributing", path: "blob/master/CONTRIBUTING.md" },
-  { label: "Governance", path: "blob/master/GOVERNANCE.md" },
-  { label: "Security", path: "blob/master/SECURITY.md" },
-] as const;

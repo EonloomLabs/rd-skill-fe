@@ -14,21 +14,20 @@ export const metadata: Metadata = {
     "Install rd-skills for Codex, Claude, Copilot, Cline or the OpenAI API, then submit your first bounded engineering task. Copy-paste commands, no profile flag to choose.",
 };
 
-/** What each line of the request template is for. */
-const TASK_FIELDS = [
-  { field: "Goal", blurb: "What should be different when this is done. One sentence." },
-  { field: "Acceptance", blurb: "How anyone could observe that it worked, without reading the diff." },
-  { field: "Allowed scope", blurb: "The files it may touch. Everything else is off limits." },
-  { field: "Verify", blurb: "The exact command that proves it. It runs after the final edit." },
-  { field: "Stop if", blurb: "The condition that should make it come back and ask instead of guessing." },
+/** Optional context — useful when you have it, never required. */
+const OPTIONAL_CONTEXT = [
+  { field: "A path", blurb: "If you already know roughly where the problem lives." },
+  { field: "Acceptance", blurb: "How you would recognise that it worked, in one line." },
+  { field: "A test command", blurb: "The command you would run yourself to check it." },
+  { field: "A constraint", blurb: "Anything that must not change — a public API, a schema." },
 ];
 
 const EXPECTATIONS = [
-  "one primary professional skill takes ownership",
-  "a task agent implements inside the scope you gave",
-  "validation runs after the final edit, not before",
-  "a separate review agent reads the actual diff",
-  "the handoff lists changed files, results, unverified scope and residual risk",
+  "it reads the current code before changing it",
+  "it finds the owning code and checks nearby consumers",
+  "it makes the smallest complete change it can support",
+  "it validates after the final edit, not before",
+  "it reports changed files, results, limits and any decision still needed from you",
 ];
 
 export default function QuickstartPage() {
@@ -45,8 +44,8 @@ export default function QuickstartPage() {
             Running in about five minutes.
           </h1>
           <p className="mt-5 max-w-[64ch] text-[1.0625rem] leading-relaxed text-muted">
-            Pick your agent, copy four commands, then send one bounded request. There is a single
-            runtime and no profile to choose — every host gets the same{" "}
+            Pick your agent, copy two commands, then describe the problem in plain language. There
+            is a single runtime and no profile to choose — every host gets the same{" "}
             {counts.runtimeTopLevel} top-level skills.
           </p>
           <ul className="mt-6 flex list-none flex-wrap gap-2 p-0">
@@ -66,35 +65,44 @@ export default function QuickstartPage() {
         id="install"
         eyebrow="Step 1"
         title="Install it for your agent."
-        lead="The options below are read from the installer's own tables, so every combination shown is one the CLI accepts. Preview first — step 3 writes nothing."
+        lead="The options below are read from the installer's own tables, so every combination shown is one the CLI accepts. Preview first — step 3 writes nothing — and note that the invocation prefix differs by host."
       >
-        <SetupWizard hosts={quickstart.setup} repoUrl={SITE.repo} />
+        <SetupWizard
+          hosts={quickstart.setup}
+          surfaces={quickstart.surfaces}
+          firstTask={quickstart.firstTask}
+          repoUrl={SITE.repo}
+        />
       </Section>
 
       <Section
         id="first-task"
         tone="surface"
         eyebrow="Step 2"
-        title="Send one bounded request."
-        lead="Open a small test repository in your agent and paste this. The five lines are the whole contract — they tell rd-skills what done means and when to stop."
+        title="Describe the problem, not the solution."
+        lead="Open a small test repository in your agent and say what is wrong. You do not need to investigate first — finding the owner, the tests and the callers is the task agent's job."
       >
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] [&>*]:min-w-0">
-          <CommandBlock code={quickstart.firstTask} label="Your first task" />
+          <CommandBlock code={quickstart.firstTask} label="A request that is enough on its own" />
 
-          <dl className="flex flex-col gap-4">
-            {TASK_FIELDS.map((item) => (
-              <div key={item.field} className="border-l-2 border-line pl-4">
-                <dt className="ident text-[0.8125rem] text-ink">{item.field}</dt>
-                <dd className="mt-1 text-[0.8125rem] leading-relaxed text-muted">{item.blurb}</dd>
-              </div>
-            ))}
-          </dl>
+          <div>
+            <p className="label text-muted">Add these only if you already know them</p>
+            <dl className="mt-3 flex flex-col gap-4">
+              {OPTIONAL_CONTEXT.map((item) => (
+                <div key={item.field} className="border-l-2 border-line pl-4">
+                  <dt className="text-[0.875rem] font-medium text-ink">{item.field}</dt>
+                  <dd className="mt-1 text-[0.8125rem] leading-relaxed text-muted">{item.blurb}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
 
         <p className="mt-6 max-w-[70ch] rounded-lg border-l-2 border-amber bg-amber-soft px-5 py-4 text-[0.875rem] leading-relaxed text-ink">
-          Some hosts have no native slash UI. Typing{" "}
-          <code className="ident">/engineering-control-plane</code> into the request text still
-          expresses routing intent — it just does not mean the host implements slash commands.
+          The invocation prefix is host-specific: Codex uses{" "}
+          <code className="ident">$engineering-control-plane</code>, Claude Code and Copilot CLI use{" "}
+          <code className="ident">/engineering-control-plane</code>. The wizard above prints the
+          right one for the agent you picked.
         </p>
       </Section>
 
@@ -102,7 +110,7 @@ export default function QuickstartPage() {
         id="expect"
         eyebrow="Step 3"
         title="Know what a good result looks like."
-        lead="If you get a diff and nothing else, something is wrong. A bounded implementation should produce all five of these."
+        lead="If you get a diff and nothing else, something is wrong. For an implementation request, rd-skills should do all five of these."
       >
         <div className="grid gap-3 md:grid-cols-2">
           <ul className="flex list-none flex-col gap-2.5 rounded-xl border border-line bg-surface p-6">
@@ -122,7 +130,7 @@ export default function QuickstartPage() {
               <p className="mt-2 text-[0.875rem] leading-relaxed text-muted">
                 Doctor confirms {counts.runtimeTopLevel} installed skills, the manifest, current
                 source bindings and the agent profile expectation for your host. It proves the files
-                are correct on disk — not that the host has loaded them.
+                are correct on disk — static checks never prove that a running host loaded them.
               </p>
             </div>
             <div className="rounded-xl border border-line bg-surface p-6">
@@ -153,7 +161,7 @@ export default function QuickstartPage() {
             href="/docs/usage"
             className="rounded-lg border border-line bg-surface px-4 py-2.5 text-sm text-ink no-underline hover:border-accent-line"
           >
-            Three request patterns
+            Everyday prompts and troubleshooting
           </Link>
           <Link
             href="/skills"
