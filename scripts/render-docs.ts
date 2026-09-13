@@ -23,6 +23,7 @@ export interface DocSpec {
 
 export const DOC_PAGES: DocSpec[] = [
   { file: "QUICKSTART.md", slug: "quickstart", group: "Get started", route: "quickstart" },
+  { file: "HOW_IT_WORKS.md", slug: "how-it-works", group: "Get started", route: "docs" },
   { file: "INSTALLATION.md", slug: "installation", group: "Get started", route: "docs" },
   { file: "USAGE.md", slug: "usage", group: "Get started", route: "docs" },
   { file: "OPERATING_MODEL.md", slug: "operating-model", group: "Operating model", route: "docs" },

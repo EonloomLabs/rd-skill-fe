@@ -13,8 +13,8 @@
 
 export const HERO = {
   eyebrow: "Engineering control plane for AI coding agents",
-  headline: "Turn a plain request into a change you can trust.",
-  sub: "rd-skills routes each task to the right professional judgment, lets the implementer find the real owner, requires validation after the final edit, and brings in analysis or an independent reviewer only when the engineering facts call for it.",
+  headline: "Describe the outcome. Get a scoped, validated change.",
+  sub: "rd-skills selects the relevant professional guidance, finds the owning code, and validates after the final edit. An ordinary local task can finish right there — deeper analysis and independent review are added only when your request or a concrete unresolved question calls for them.",
 } as const;
 
 /** The spine, in the repository's own words. */
@@ -55,11 +55,11 @@ export const CONTROLLED_PATH = {
   ],
   guarantees: [
     "Reads the current code before changing it",
-    "Finds the owning code and its consumers",
+    "Finds the owning code and checks nearby consumers",
     "Applies guidance suited to the task and its risks",
     "Makes the smallest complete change it can support",
     "Validates after the final edit",
-    "A separate reviewer inspects the actual change",
+    "Adds an independent reviewer when a concrete risk needs one",
     "Reports files, results, limits and open decisions",
   ],
 } as const;
@@ -93,6 +93,10 @@ export const CORE_SYSTEMS = [
 ] as const;
 
 /** The priority order the runtime resolves conflicts by. */
+/** master README, "What rd-skills does" — the boundary that trips people up. */
+export const AUTHORITY_NOTE =
+  "The implementing agent discovers local files, owners and tests as part of the task. It asks for deeper analysis when an unresolved decision could change the implementation, and stops for any missing authorization or user-owned decision.";
+
 export const PRIORITIES = [
   "Engineering correctness",
   "Professional routing accuracy",

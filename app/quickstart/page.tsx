@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, CircleCheck, LifeBuoy } from "lucide-react";
 
+import { BehaviorContrast } from "@/components/diagram/behavior-contrast";
 import { SetupWizard } from "@/components/quickstart/setup-wizard";
 import { CommandBlock } from "@/components/terminal/command-block";
 import { Section } from "@/components/ui/section";
@@ -31,7 +32,7 @@ const EXPECTATIONS = [
 ];
 
 export default function QuickstartPage() {
-  const { quickstart } = getDataset();
+  const { quickstart, explainers } = getDataset();
   const counts = getCounts();
   const doc = getDoc("quickstart");
 
@@ -110,7 +111,7 @@ export default function QuickstartPage() {
         id="expect"
         eyebrow="Step 3"
         title="Know what a good result looks like."
-        lead="If you get a diff and nothing else, something is wrong. For an implementation request, rd-skills should do all five of these."
+        lead="If you get a diff and nothing else, something is wrong. For an implementation request, rd-skills should do all five of these — and an ordinary local change can finish without a separate analysis or review."
       >
         <div className="grid gap-3 md:grid-cols-2">
           <ul className="flex list-none flex-col gap-2.5 rounded-xl border border-line bg-surface p-6">
@@ -156,7 +157,26 @@ export default function QuickstartPage() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold tracking-[-0.02em]">
+            And what should make you suspicious
+          </h3>
+          <p className="mt-2 max-w-[68ch] text-[0.9375rem] text-muted">
+            Ceremony is the failure mode to watch for. If every small change triggers a planning
+            round and a review, something is routing badly.
+          </p>
+          <div className="mt-6">
+            <BehaviorContrast rows={explainers.behavior} />
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link
+            href="/docs/how-it-works"
+            className="rounded-lg border border-line bg-surface px-4 py-2.5 text-sm text-ink no-underline hover:border-accent-line"
+          >
+            How it works
+          </Link>
           <Link
             href="/docs/usage"
             className="rounded-lg border border-line bg-surface px-4 py-2.5 text-sm text-ink no-underline hover:border-accent-line"

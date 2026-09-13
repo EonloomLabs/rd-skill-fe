@@ -157,6 +157,24 @@ export interface DocPage {
   url: string;
 }
 
+/** One row of the "Four different questions" table. */
+export interface Mechanism {
+  name: string;
+  question: string;
+  does: string;
+}
+
+/** One row of the "What to expect" table. */
+export interface BehaviorContrast {
+  normal: string;
+  questionable: string;
+}
+
+export interface Explainers {
+  mechanisms: Mechanism[];
+  behavior: BehaviorContrast[];
+}
+
 export interface SkillDataset {
   generatedAt: string;
   sourceRepo: string;
@@ -168,4 +186,5 @@ export interface SkillDataset {
   counts: SkillCounts;
   quickstart: Quickstart;
   docs: DocPage[];
+  explainers: Explainers;
 }

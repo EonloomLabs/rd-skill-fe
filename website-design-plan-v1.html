@@ -262,7 +262,7 @@ footer{
   <div class="rail-brand">
     <span class="mark">Website Plan v1</span>
     <span class="name">rd-skills 官网蓝图</span>
-    <span class="sub">依据 prd-v1.md 编制 · 已同步 bilingual-guide V24</span>
+    <span class="sub">依据 prd-v1.md 编制 · 已同步 upstream master (e4375ee)</span>
   </div>
   <div class="toc">
     <div class="toc-group">对齐</div>
@@ -295,9 +295,9 @@ footer{
   <ul style="margin:0">
     <li><strong>站点形态</strong>：Next.js App Router 全静态官网，5 类路由，无账户、无后端、无数据库。</li>
     <li><strong>唯一真源</strong>：所有 Skill 数据与统计数字由上游仓库 <code>machenjie/rd-skills</code> 的 registry 构建期同步生成，网站不维护第二套 Skill 数据。</li>
-    <li><strong>叙事主干</strong>：Intent → Boundary → Professional Owner → JIT Expertise → Bounded Execution → Validation → Independent Review → Evidence → Closure。首页每一段只服务这条线上的一个环节。</li>
+    <li><strong>叙事主干</strong>（已随 V24 改写）：Request → 选专业 → Inspect → Edit → Self-check → Fresh Validation → Report，外加 Analysis 与 Independent Review 两个按需分支。首页每一段只服务这条线上的一个环节。</li>
     <li><strong>视觉方向</strong>：Developer Infrastructure。图表即插画，终端即演示；禁止机器人、大脑、渐变星空与 AI 插图。</li>
-    <li><strong>已确认并实现</strong>：英文单语官网；submodule 接入上游 registry；上游文档站内可读；<code>/quickstart</code> 为 agent/scope 安装向导；M0–M5 全量交付，208 个静态页面（见 §10、§11）。</li>
+    <li><strong>已确认并实现</strong>：英文单语官网；submodule 接入上游 registry；上游文档站内可读；<code>/quickstart</code> 为 agent/scope 安装向导；M0–M5 全量交付，209 个静态页面（见 §10、§11）。</li>
   </ul>
   <div class="facts">
     <div class="fact"><b>26</b><span>Host 顶层 Runtime Skill</span></div>
@@ -327,6 +327,22 @@ footer{
 </table>
 </div>
 <div class="rule"><strong>数据管线经受住了这次变更。</strong>上游 README 被整体重写后，抽取器因找不到 <code>## Start</code> 段而失败，构建自动回落到 snapshot 并标记 <code>degraded</code>——没有发布任何失效命令。适配新结构后重新同步，计数不变（189 / 26 / 154 / 163 / 611），但安装命令从三段减为两段，首个任务示例也从五字段合同变成一句自然语言描述。</div>
+<h3>master 同步（e4375ee）</h3>
+<p>随后又依据上游 <code>master</code> 分支做了一次同步。submodule 已从 <code>codex/improve_token_usage_quality</code> 改为跟踪 <code>master</code>，避免再次被 force-push 影响。</p>
+<div class="scroller">
+<table>
+  <thead><tr><th>master 的变化</th><th>站点处理</th></tr></thead>
+  <tbody>
+    <tr><td>定位改写：「turn a plain-language request into a <strong>scoped change backed by current code and relevant validation</strong>」；强调「An ordinary local task can finish there」</td><td>Hero 文案改为 <em>Describe the outcome. Get a scoped, validated change.</em></td></tr>
+    <tr><td>新增 <code>docs/HOW_IT_WORKS.md</code>，含「Four different questions」表：Analysis / Task / Validation / Review 各自回答什么问题</td><td>新增 MechanismTable 组件，首页与 /architecture 各一处；并保留原文关键澄清「Validation is an activity, not a fifth agent role」</td></tr>
+    <tr><td><code>docs/USAGE.md</code> 新增「正常表现 vs 该质疑的表现」对照表</td><td>新增 BehaviorContrast 组件。首页新增一段「How to tell it is working」，/quickstart 第三步补上「什么该让你起疑」</td></tr>
+    <tr><td>Main 新增 routing-asset bootstrap 与 cancellation 传播；Task 的 ownership 证据规则收紧（路径/命中/测试/文档/调用者都不单独证明 ownership）</td><td>暂未单独成段；属于实现细节，站内通过 /docs/operating-model 与 /docs/subagent-model 全文可读</td></tr>
+    <tr><td>README 的 <code>## Get started</code> / <code>## Usage</code> 合并为 <code>## Reading path</code></td><td>抽取器只依赖 Install / First task / Supported hosts 三段，未受影响</td></tr>
+  </tbody>
+</table>
+</div>
+<p>计数与 host 列表不变：189 source skills、26 top-level、154 JIT、5 个 host（codex / claude / copilot / cline / openai-api），调用前缀仍是 Codex <code>$</code>、Claude Code 与 Copilot CLI <code>/</code>。</p>
+
 <div class="rule warn"><strong>据实记录：</strong><code>docs/ROUTING_EXAMPLES.md</code> 在上游被删除，站内文档集合相应移除该页并新增 <code>docs/HOOKLESS_ARCHITECTURE.md</code>。下文 §01 的 C1–C4 是初版依据 V22 时的裁定，保留以记录判断过程；其中 C3（Execution Level 语义）已被 V24 整体取消，不再适用。</div>
 
 <h2 id="s1"><span class="num">01</span><span>输入核对与冲突裁定</span></h2>
@@ -400,12 +416,12 @@ footer{
   <thead><tr><th>路由</th><th>页面任务</th><th>主 CTA</th><th>数据依赖</th><th>渲染</th></tr></thead>
   <tbody>
     <tr><td><code>/</code></td><td>30 秒讲完控制平面，建立“这不是 Skill 合集”的认知</td><td>Get Started</td><td>counts + 8–12 个代表 Professional</td><td>SSG</td></tr>
-    <tr><td><code>/architecture</code></td><td>给 Infra 工程师看的完整六平面 + 两条 Authority 链 + 执行模型</td><td>Read Docs</td><td>planes / roles 静态内容</td><td>SSG</td></tr>
+    <tr><td><code>/architecture</code></td><td>给 Infra 工程师看的完整六平面 + Hookless 边界 + 四机制 + 执行模型</td><td>Read Docs</td><td>planes / roles 静态内容</td><td>SSG</td></tr>
     <tr><td><code>/skills</code></td><td>按“决策归属”而非技术栈组织的能力检索</td><td>进入 Skill 详情</td><td>完整 skills 数据集</td><td>SSG + 客户端过滤</td></tr>
     <tr><td><code>/skills/[slug]</code></td><td>单个 Skill 的契约视图：何时用 / 何时不用 / 输入 / 输出</td><td>View source on GitHub</td><td>单条 skill + 关联 Layer 3</td><td>SSG（generateStaticParams）</td></tr>
     <tr><td><code>/quickstart</code></td><td>选 agent 与 scope，生成可粘贴命令；含首个任务模板与逐字段解释</td><td>Copy command</td><td>安装器 agent/scope 矩阵 + README 命令块</td><td>SSG + 客户端向导</td></tr>
-    <tr><td><code>/docs</code></td><td>文档索引，按四组分类</td><td>进入文档正文</td><td>14 篇渲染后的文档元信息</td><td>SSG</td></tr>
-    <tr><td><code>/docs/[slug]</code></td><td><strong>站内阅读</strong>上游文档正文，右侧 TOC，链接自动改写</td><td>上下篇 / 查看源文件</td><td>构建期 markdown → HTML</td><td>SSG（13 页）</td></tr>
+    <tr><td><code>/docs</code></td><td>文档索引，按四组分类</td><td>进入文档正文</td><td>15 篇渲染后的文档元信息</td><td>SSG</td></tr>
+    <tr><td><code>/docs/[slug]</code></td><td><strong>站内阅读</strong>上游文档正文，右侧 TOC，链接自动改写</td><td>上下篇 / 查看源文件</td><td>构建期 markdown → HTML</td><td>SSG（14 页）</td></tr>
   </tbody>
 </table>
 </div>
@@ -532,15 +548,18 @@ interface SkillDataset {
 <pre><code>rd-skill-fe/
 ├─ app/
 │  ├─ layout.tsx                # 字体、theme script、nav、footer
-│  ├─ page.tsx                  # 首页（12 段，全部 Server Component）
+│  ├─ page.tsx                  # 首页（13 段，Server Component 为主）
 │  ├─ architecture/page.tsx
 │  ├─ skills/page.tsx           # Explorer 壳 + 客户端过滤岛
 │  ├─ skills/[slug]/page.tsx
 │  ├─ quickstart/page.tsx
 │  ├─ docs/page.tsx
+│  ├─ docs/[slug]/page.tsx      # 上游文档站内阅读
 │  └─ opengraph-image.tsx       # 动态 OG，走 §9 的排版规则
 ├─ components/
-│  ├─ diagram/                  # PlaneStack / RoleRelay / SkillTree / EvidenceTrack / AssuranceLadder
+│  ├─ diagram/                  # PlaneStack / RoleRelay / SkillTree / HooklessBoundary
+│  │                            # MechanismTable / WorkPaths / EvidencePillars
+│  │                            # RiskDistinctions / BehaviorContrast / HostMatrix
 │  ├─ terminal/                 # TaskLifecycle（Hero 演示）/ CommandBlock（可复制）
 │  ├─ skills/                   # SkillCard / SkillFilters / SkillContract
 │  └─ ui/                       # shadcn 派生
@@ -548,7 +567,8 @@ interface SkillDataset {
 │  ├─ skills.generated.json     # 构建产物，.gitignore
 │  └─ skills.snapshot.json      # last-known-good，入库
 ├─ lib/skills.ts                # 唯一读取入口 + 派生统计
-├─ scripts/sync-rd-skills.ts
+├─ scripts/                     # sync-rd-skills / render-docs
+│                              # read-installer / read-explainers
 └─ content/                     # 纯文案（架构叙述、词汇表），与数据分离</code></pre>
 
 <h2 id="s5"><span class="num">05</span><span>设计系统与图示语言</span></h2>
@@ -594,21 +614,22 @@ interface SkillDataset {
 <div class="rule warn"><strong>视觉禁令（PRD §16，逐条纳入 PR checklist）：</strong>无 AI 机器人 / 大脑 / 宇宙背景 / 霓虹 Cyberpunk / 大面积渐变 / 3D 球体 / 图库照片 / emoji 图标 / AI 生成插图。任何一条出现即 review 打回。</div>
 
 <h2 id="s6"><span class="num">06</span><span>首页分段设计</span></h2>
-<p class="sec-note">12 段，严格对应 PRD §7。每段只回答一个问题，读者向下滚动的过程就是理解主干的过程。</p>
+<p class="sec-note">13 段。初版按 PRD §7 的 12 段设计，V24 与 master 同步后重排：删除 Assurance Ladder 与 Evidence Track，新增 Hookless 边界、四机制对照与行为对照。每段仍只回答一个问题。</p>
 
 <div class="secplan">
-  <div class="secplan-row"><span class="s">01</span><span class="h">Hero<em>ENGINEERING CONTROL PLANE</em></span><span class="b">Headline：<em>Make coding agents work like an engineering system.</em> 右侧 / 下方是 Terminal 生命周期演示：输入一句真实需求（为结算加重试但不改公开 API），自动逐行推进 Classify → backend-change-builder → Layer 3 → Task → Validation → Review → Evidence → Completed。<span class="meta"><b>动效</b> 自动播放一次，8 行 × 220ms 逐行；播完保留完整结果可回看；reduced-motion 直接显示终态</span></span></div>
-  <div class="secplan-row"><span class="s">02</span><span class="h">System Facts<em>不做 Logo Wall</em></span><span class="b">六个数字（见摘要），全部来自 <code>counts</code>。每个数字下方一行注释说明它为什么重要，例如 “26 · Host 顶层 Runtime Skill —— 深度不在顶层，在 Professional 后面”。</span></div>
-  <div class="secplan-row"><span class="s">03</span><span class="h">Problem<em>Coding is not engineering.</em></span><span class="b">左右对照：Typical Agent（Prompt → Search → Edit → Test → Done，附 7 个失效模式）vs rd-skills（Intent → Boundary → … → Evidence-backed Closure）。左侧刻意用中性灰而非“红色错误”，避免稻草人感。</span></div>
-  <div class="secplan-row"><span class="s">04</span><span class="h">Core Model<em>Three systems. One task.</em></span><span class="b">Decision Boundary / Expertise Injection / Assurance Controller 三张大卡，向下汇聚到一个 Engineering Task 节点。<span class="meta"><b>动效</b> 进入视口时三条汇聚线依次描边，一次性</span></span></div>
-  <div class="secplan-row"><span class="s">05</span><span class="h">How It Works<em>8 步 Timeline</em></span><span class="b">Request → Classify Once → Authority → Professional Owner → JIT Expertise → Execute + Validate → Independent Review → Evidence-backed Closure。桌面横向、移动纵向。第 3 步要能同时展示 Direct 与 Analyzed 两条 Authority 链（v22 §4.2）。</span></div>
-  <div class="secplan-row"><span class="s">06</span><span class="h">Six Planes<em>Plane Stack</em></span><span class="b">六层纵向堆叠 + 组件 chip。顶部一行强调语放大：<strong>These are responsibility planes, not six sequential stages.</strong> 这是最容易被误读的一段，排版上要让这句话无法被跳过。</span></div>
-  <div class="secplan-row"><span class="s">07</span><span class="h">Agent Roles<em>Role Relay</em></span><span class="b">四卡 + 接力轨 + “This is not always a fixed linear pipeline.” 注脚。每卡底部固定一行反色区块写“故意不能做”。</span></div>
-  <div class="secplan-row"><span class="s">08</span><span class="h">Skill Architecture<em>本页视觉高点</em></span><span class="b">Skill Tree 展开交互：Professional 节点点击后展开 Foundation / Domain / References。核心文案 <em>Load the smallest set of expertise that can materially change the current engineering decision.</em> 同时呈现 189 source 与 26 runtime 的对比条，说明“顶层收敛不等于能力减少”。</span></div>
-  <div class="secplan-row"><span class="s">09</span><span class="h">Professionals<em>按决策归属分组</em></span><span class="b">展示 8–12 个代表 Professional，按 v22 的五组分类（需求分析 4 / 影响架构 5 / 实现 Owner 8 / Gate 6 / Review 与治理 3）。每张卡是“它拥有哪类决定”，不是“它支持什么语言”。底部 Browse all 25 skills。</span></div>
-  <div class="secplan-row"><span class="s">10</span><span class="h">Evidence<em>Evidence Track</em></span><span class="b">Change → Validation → Evidence Ledger → Independent Review → Closure，并解释 Scope / Freshness / Proof Limit / Residual Risk 四个概念。核心文案 <em>A green test suite is not automatically proof of correctness.</em><span class="meta"><b>动效</b> 滚动驱动状态推进，可反复触发</span></span></div>
-  <div class="secplan-row"><span class="s">11</span><span class="h">Assurance &amp; Hosts<em>L1–L5 + 能力矩阵</em></span><span class="b">Assurance Ladder（按 C3 裁定用 v22 语义，标注“不是执行阶段”）+ Host 能力矩阵（按 C2 裁定四态标注）。矩阵在移动端转为按 Host 分组的卡片。</span></div>
-  <div class="secplan-row"><span class="s">12</span><span class="h">Quickstart + Open Source<em>转化区</em></span><span class="b">真实 Terminal 四步 + 第一个任务模板（Goal / Acceptance / Allowed scope / Verify / Stop if）。命令块一键复制。收尾 Built in the open：Source / Docs / Governance / Contributing / Security / Validation。</span></div>
+  <div class="secplan-row"><span class="s">01</span><span class="h">Hero<em>ENGINEERING CONTROL PLANE</em></span><span class="b">Headline：<em>Describe the outcome. Get a scoped, validated change.</em> 下方 Terminal 逐行演示一次真实任务（支付回调重复建单）：route → layer 3 → inspect → analysis → edit → validate → review → report。<span class="meta"><b>动效</b> 进入视口播放一次，9 行 × 230ms；reduced-motion 直接显示终态</span></span></div>
+  <div class="secplan-row"><span class="s">02</span><span class="h">System Facts<em>不做 Logo Wall</em></span><span class="b">六个数字全部来自 <code>counts</code>，每个数字下一行注释说明它为什么重要。</span></div>
+  <div class="secplan-row"><span class="s">03</span><span class="h">Problem<em>Coding is not engineering.</em></span><span class="b">左右对照：Ordinary AI coding（Request → Find code → Edit → Run a test → Done）vs rd-skills 的七环节。左侧用中性灰而非红色，避免稻草人感。</span></div>
+  <div class="secplan-row"><span class="s">04</span><span class="h">Core Model<em>V24 三系统</em></span><span class="b">Implementation First / Professional Knowledge / Evidence-Driven Depth 三张卡，底部是冲突时的优先级顺序：工程正确性 › 路由准确性 › 判断质量 › Context › 执行时间。</span></div>
+  <div class="secplan-row"><span class="s">05</span><span class="h">How It Works<em>7 步 + 四机制 + 两分支</em></span><span class="b">7 步主干 → 「implementing agent 自己做 discovery」的边界说明 → 四机制对照（Analysis / Task / Validation / Review 各回答什么问题，含「Validation 不是第五个 agent」）→ 两个按需分支卡，每张都列「不是触发器」。</span></div>
+  <div class="secplan-row"><span class="s">06</span><span class="h">Behaviour<em>How to tell it is working</em></span><span class="b">五组「正常表现 vs 该质疑的表现」，直接取自上游 USAGE.md。这是让普通用户不读 diff 也能判断跑得对不对的一段，ceremony 被明确标为要质疑的行为。</span></div>
+  <div class="secplan-row"><span class="s">07</span><span class="h">Six Planes<em>Plane Stack</em></span><span class="b">Authority · Knowledge · Role · Coordination · Evidence · Delivery/QA。强调语：<strong>These are responsibility planes, not six sequential stages.</strong></span></div>
+  <div class="secplan-row"><span class="s">08</span><span class="h">Hookless Boundary<em>差异化最强的一段</em></span><span class="b">「有什么 / 刻意没有什么」两栏 + 为什么。没有 executable hooks、interception bridge、第二 sandbox、私有 evidence store、内部 task-state engine。</span></div>
+  <div class="secplan-row"><span class="s">09</span><span class="h">Agent Roles<em>Role Relay</em></span><span class="b">四卡，每卡一行 summary（dispatch only / read-only, on demand / 默认实现者 / 按需独立）+ 底部反色区「故意不能做」。注脚：实现请求默认直接进 Task。</span></div>
+  <div class="secplan-row"><span class="s">10</span><span class="h">Skill Architecture<em>本页视觉高点</em></span><span class="b">Skill Tree 交互：选中 Professional 后展开其 Layer 3 候选。核心文案 <em>Load the smallest set of expertise that can materially change the current engineering decision.</em></span></div>
+  <div class="secplan-row"><span class="s">11</span><span class="h">Professionals<em>按决策归属分组</em></span><span class="b">10 个代表 Professional，按五组决策归属分类。底部 Browse all。</span></div>
+  <div class="secplan-row"><span class="s">12</span><span class="h">Evidence<em>三支柱 + 三规则</em></span><span class="b">Current Source · Fresh Validation · Truthful Limits，另加三条「改动要小」的规则（读范围可扩写范围不可 / structure 需要今天就存在的理由 / 同一路径失败两次必须换假设）。</span></div>
+  <div class="secplan-row"><span class="s">13</span><span class="h">Risk + Hosts + Quickstart + Open Source<em>收尾</em></span><span class="b">五组「不能混淆的概念」+ escalation 三条件；Host Product Surfaces 矩阵（artifact / invocation / workflow 三个独立问题）；两条安装命令 + 自然语言首个任务；Built in the open。</span></div>
 </div>
 
 <h2 id="s7"><span class="num">07</span><span>Skills Explorer 与详情页</span></h2>
@@ -689,17 +710,19 @@ interface SkillDataset {
     <tr><td><strong>M1</strong> 数据管线</td><td><code>vendor/rd-skills</code> submodule + <code>sync-rd-skills.ts</code> + schema 校验 + snapshot 回落</td><td><span class="chip ok">已交付</span></td><td>输出 189 source / 26 top-level / 154 JIT / 163 Layer 3 source / 611 references，与 v22 指南逐项吻合</td></tr>
     <tr><td><strong>M2</strong> 首页</td><td>12 段全量 + 五种图示语言 + Hero Terminal 生命周期</td><td><span class="chip ok">已交付</span></td><td>七问验收对应段落齐备；Hero demo 引用的 skill slug 在构建期校验，写错即构建失败</td></tr>
     <tr><td><strong>M3</strong> Skills</td><td>Explorer（类型/分组/角色过滤 + 搜索 + URL 同步）+ 189 个详情页</td><td><span class="chip ok">已交付</span></td><td>189 页静态预渲染；无任何手写 skill 文案</td></tr>
-    <tr><td><strong>M4</strong> 转化页</td><td>/architecture · /quickstart 安装向导 · /docs + 13 篇站内文档 · OG · sitemap · robots · Analytics</td><td><span class="chip ok">已交付</span></td><td>命令、host/scope 矩阵、文档正文均由仓库构建期抽取；文件缺失或组合非法即构建失败</td></tr>
-    <tr><td><strong>M5</strong> 收尾</td><td>a11y 审计、移动端走查、性能复核</td><td><span class="chip ok">已交付</span></td><td>各路由均 1 个 h1、1 个 main、0 个无名控件；375px 下 <code>scrollWidth === clientWidth</code>；共 208 个静态 HTML 页面</td></tr>
+    <tr><td><strong>M4</strong> 转化页</td><td>/architecture · /quickstart 安装向导 · /docs + 14 篇站内文档 · OG · sitemap · robots · Analytics</td><td><span class="chip ok">已交付</span></td><td>命令、host/scope 矩阵、文档正文均由仓库构建期抽取；文件缺失或组合非法即构建失败</td></tr>
+    <tr><td><strong>M5</strong> 收尾</td><td>a11y 审计、移动端走查、性能复核</td><td><span class="chip ok">已交付</span></td><td>各路由均 1 个 h1、1 个 main、0 个无名控件；375px 下 <code>scrollWidth === clientWidth</code>；共 209 个静态 HTML 页面</td></tr>
   </tbody>
 </table>
 </div>
 
 <h3>实际交付结构</h3>
 <pre><code>app/                    /, /architecture, /skills, /skills/[slug],
-                        /quickstart, /docs, /guide
-components/diagram/     PlaneStack · RoleRelay · SkillTree · EvidenceTrack
-                        AssuranceLadder · HostMatrix · AuthorityChains · BuildPipeline
+                        /quickstart, /docs, /docs/[slug]
+components/diagram/     PlaneStack · RoleRelay · SkillTree · BuildPipeline
+                        HooklessBoundary · MechanismTable · WorkPaths
+                        EvidencePillars · RiskDistinctions · BehaviorContrast
+                        HostMatrix · CompareColumns · CoreSystems · StepsTimeline
 components/terminal/    TaskLifecycle · CommandBlock
 components/quickstart/  SetupWizard（agent/scope → 可粘贴命令）
 content/                narrative copy + 唯一的人工分类（五个决策归属组）
@@ -707,6 +730,7 @@ lib/skills.ts           读取 generated dataset 的唯一入口
 scripts/sync-rd-skills.ts
 scripts/render-docs.ts      上游 markdown → HTML，链接改写
 scripts/read-installer.ts   安装器 agent/scope 矩阵抽取
+scripts/read-explainers.ts  四机制表与行为对照表抽取
 data/skills.snapshot.json   last-known-good，入库（含渲染后的文档）</code></pre>
 
 <div class="rule warn"><strong>唯一未完成项：</strong>Lighthouse 分数尚未实测。CI 里已经有 typecheck、registry 同步完整性断言（含 degraded 检测）和 <code>next build</code> 三道阻断门；Lighthouse CI 需要一个可访问的部署地址才能接，等首次部署后补上。其余性能指标（HTML brotli 体积、首屏 JS、静态页数量）均已本机实测，见上表。</div>
@@ -726,7 +750,7 @@ data/skills.snapshot.json   last-known-good，入库（含渲染后的文档）<
   <div class="q">
     <h4><span class="qid">B</span>数据接入 · git submodule</h4>
     <p>以 submodule 引入 <code>machenjie/rd-skills</code>，构建期直接读取本地 registry 文件，不依赖 GitHub API。</p>
-    <p class="rec"><b>已核实</b> 上游仓库可达，<code>src/registry/</code> 下有 control / professional / foundation / domain 四份 registry；字段与 §3 的 schema 基本一一对应（<code>trigger_signals</code>、<code>anti_trigger_signals</code>、<code>required_inputs</code>、<code>output_contract</code>、<code>layer3_candidates</code>、<code>reference_index</code>、<code>role_support</code>）。skill 的一句话描述取自各 <code>SKILL.md</code> 的 frontmatter <code>description</code>。目录实测：25 Professional / 13 Domain / 1 Control。锁定 ref：<code>codex/improve_token_usage_quality</code>（v22 指南同步的分支）。</p>
+    <p class="rec"><b>已核实</b> 上游仓库可达，<code>src/registry/</code> 下有 control / professional / foundation / domain 四份 registry；字段与 §3 的 schema 基本一一对应（<code>trigger_signals</code>、<code>anti_trigger_signals</code>、<code>required_inputs</code>、<code>output_contract</code>、<code>layer3_candidates</code>、<code>reference_index</code>、<code>role_support</code>）。skill 的一句话描述取自各 <code>SKILL.md</code> 的 frontmatter <code>description</code>。目录实测：25 Professional / 13 Domain / 1 Control。当前 submodule 跟踪 <code>master</code>（曾短暂锁定 <code>codex/improve_token_usage_quality</code>，因该分支被 force-push 而改为 master）。</p>
   </div>
   <div class="q">
     <h4><span class="qid">D</span>上手体验 · 安装向导 <span class="chip info">新增</span></h4>
@@ -735,14 +759,14 @@ data/skills.snapshot.json   last-known-good，入库（含渲染后的文档）<
   </div>
   <div class="q">
     <h4><span class="qid">C</span>首期范围 · 全量 M0–M5</h4>
-    <p>六条路由一次到位，外加 <code>/guide</code>。</p>
+    <p>六条路由一次到位。（<code>/guide</code> 已按决策 A 的修订移除，深度内容由 <code>/docs/[slug]</code> 承担。）</p>
     <p class="rec"><b>实施顺序</b> 仍按 M0 → M5 推进，每个里程碑独立可部署；M2 的七问验收不因全量范围而放宽。</p>
   </div>
 </div>
 
 <footer>
   <span>rd-skills 官网蓝图 · v1</span>
-  <span>来源：prd-v1.md · rd-skills-bilingual-beginner-guide-v22.html · github.com/machenjie/rd-skills</span>
+  <span>来源：prd-v1.md · bilingual-guide V22/V24 · github.com/machenjie/rd-skills@master</span>
 </footer>
 
 </main>

@@ -4,7 +4,7 @@ The product website for [rd-skills](https://github.com/machenjie/rd-skills), an 
 control plane for AI coding agents.
 
 Built from [`prd-v1.md`](prd-v1.md) and the bilingual beginner guide, currently synced with
-**V24** of that guide and upstream commit `46ae30ec`. The design and implementation plan is
+upstream **`master`** (`e4375ee`) and V24 of that guide. The design and implementation plan is
 [`website-design-plan-v1.html`](website-design-plan-v1.html).
 
 V24 changed the runtime model, not just the numbers: there is no execution-level ladder, no
@@ -36,12 +36,15 @@ vendor/rd-skills/src/registry/*.yaml            git submodule, authoritative
 vendor/rd-skills/**/SKILL.md                    one-line descriptions (frontmatter)
 vendor/rd-skills/README.md                      install commands, host surface table
 vendor/rd-skills/docs/*.md                      rendered to HTML for on-site reading
+vendor/rd-skills/docs/HOW_IT_WORKS.md           the four-mechanism table
+vendor/rd-skills/docs/USAGE.md                  the normal-vs-questionable behaviour table
 vendor/rd-skills/installers/changeforge_install.py   agent/scope install matrix
 vendor/rd-skills/scripts/quickstart.py          accepted agents and scopes
           |
           v  scripts/sync-rd-skills.ts
           |     + scripts/render-docs.ts     markdown -> HTML, links rewritten
           |     + scripts/read-installer.ts  which agent supports which scope
+          |     + scripts/read-explainers.ts the two explainer tables
           |
 data/skills.generated.json             build artifact, gitignored
 data/skills.snapshot.json              last-known-good, committed
@@ -88,4 +91,5 @@ scripts/                sync-rd-skills.ts, render-docs.ts, read-installer.ts
 | `pnpm build` | sync, then produce the static build |
 | `pnpm typecheck` | `tsc --noEmit` |
 
-To pin a different upstream ref: `RD_SKILLS_REF=<branch> pnpm sync`.
+The submodule tracks `master`. To sync against another ref:
+`RD_SKILLS_REF=<branch> pnpm sync` after checking that ref out in `vendor/rd-skills`.

@@ -20,6 +20,7 @@ import {
   PROFESSIONAL_GROUPS,
   PROFESSIONAL_GROUP_BY_SKILL,
 } from "../content/professional-groups";
+import { readExplainers } from "./read-explainers";
 import { readInstallerMatrix } from "./read-installer";
 import { renderDocs } from "./render-docs";
 import type {
@@ -41,7 +42,7 @@ const OUT = path.join(ROOT, "data/skills.generated.json");
 const SNAPSHOT = path.join(ROOT, "data/skills.snapshot.json");
 
 const REPO = "https://github.com/machenjie/rd-skills";
-const REF = process.env.RD_SKILLS_REF ?? "codex/improve_token_usage_quality";
+const REF = process.env.RD_SKILLS_REF ?? "master";
 
 const ACRONYMS: Record<string, string> = {
   ai: "AI",
@@ -401,6 +402,7 @@ function main() {
       counts,
       quickstart,
       docs: renderDocs(VENDOR, REPO, commit),
+      explainers: readExplainers(VENDOR),
     };
 
     summarizeDiff(skills, snapshot);

@@ -5,6 +5,7 @@ import { BuildPipeline } from "@/components/diagram/build-pipeline";
 import { EvidencePillars } from "@/components/diagram/evidence-pillars";
 import { HooklessBoundary } from "@/components/diagram/hookless-boundary";
 import { HostMatrix } from "@/components/diagram/host-matrix";
+import { MechanismTable } from "@/components/diagram/mechanism-table";
 import { PlaneStack } from "@/components/diagram/plane-stack";
 import { RiskDistinctions } from "@/components/diagram/risk-distinctions";
 import { RoleRelay } from "@/components/diagram/role-relay";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function ArchitecturePage() {
   const counts = getCounts();
-  const { quickstart } = getDataset();
+  const { quickstart, explainers } = getDataset();
 
   return (
     <>
@@ -76,6 +77,9 @@ export default function ArchitecturePage() {
         lead="An implementation request goes straight to the task agent. Analysis and independent review are branches taken when the facts require them, not stages every task passes through."
       >
         <StepsTimeline />
+        <div className="mt-10">
+          <MechanismTable mechanisms={explainers.mechanisms} />
+        </div>
         <div className="mt-10">
           <WorkPaths />
         </div>

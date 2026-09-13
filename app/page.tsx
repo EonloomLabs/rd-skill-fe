@@ -2,11 +2,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { DEMO, HERO, OPEN_SOURCE } from "@/content/model";
+import { BehaviorContrast } from "@/components/diagram/behavior-contrast";
 import { CompareColumns } from "@/components/diagram/compare-columns";
 import { CoreSystems } from "@/components/diagram/core-systems";
 import { EvidencePillars } from "@/components/diagram/evidence-pillars";
 import { HooklessBoundary } from "@/components/diagram/hookless-boundary";
 import { HostMatrix } from "@/components/diagram/host-matrix";
+import { MechanismTable } from "@/components/diagram/mechanism-table";
 import { RiskDistinctions } from "@/components/diagram/risk-distinctions";
 import { WorkPaths } from "@/components/diagram/work-paths";
 import { PlaneStack } from "@/components/diagram/plane-stack";
@@ -18,7 +20,7 @@ import { TaskLifecycle, type LifecycleLine } from "@/components/terminal/task-li
 import { SkillCard } from "@/components/skills/skill-card";
 import { Section } from "@/components/ui/section";
 import { StatGrid } from "@/components/ui/stat-grid";
-import { CHANGE_RULES } from "@/content/model";
+import { AUTHORITY_NOTE, CHANGE_RULES } from "@/content/model";
 import { SITE } from "@/lib/site";
 import {
   getCounts,
@@ -41,7 +43,7 @@ function lifecycleLines(): LifecycleLine[] {
 
 export default function Home() {
   const counts = getCounts();
-  const { quickstart } = getDataset();
+  const { quickstart, explainers } = getDataset();
   const groups = getProfessionalsByGroup();
   const professionals = groups.flatMap((g) => g.skills);
   const featured = groups.flatMap((group) => group.skills.slice(0, 2)).slice(0, 10);
@@ -163,7 +165,23 @@ export default function Home() {
         lead="This is the whole ordinary path. There is no mandatory brief, task contract, handoff or review standing in front of it — those are added only when the engineering facts call for them."
       >
         <StepsTimeline />
-        <div className="mt-10">
+
+        <p className="mt-6 max-w-[74ch] rounded-lg border-l-2 border-accent bg-accent-soft px-5 py-4 text-[0.9375rem] leading-relaxed text-ink">
+          {AUTHORITY_NOTE}
+        </p>
+
+        <div className="mt-12">
+          <h3 className="text-xl font-semibold tracking-[-0.02em]">Four mechanisms, four questions</h3>
+          <p className="mt-2 max-w-[68ch] text-[0.9375rem] text-muted">
+            These are not four stages every change passes through. Each one answers a different
+            question, and only the ones with a question to answer show up.
+          </p>
+          <div className="mt-6">
+            <MechanismTable mechanisms={explainers.mechanisms} />
+          </div>
+        </div>
+
+        <div className="mt-12">
           <h3 className="text-xl font-semibold tracking-[-0.02em]">Added only on demand</h3>
           <p className="mt-2 max-w-[68ch] text-[0.9375rem] text-muted">
             Depth is not chosen by a level or a file count. It is chosen by whether an unresolved
@@ -173,6 +191,22 @@ export default function Home() {
             <WorkPaths />
           </div>
         </div>
+      </Section>
+
+      {/* ------------------------------------------- recognising good work */}
+      <Section
+        id="behaviour"
+        tone="surface"
+        eyebrow="How to tell it is working"
+        title="You should be able to audit it without reading the diff."
+        lead="A control plane is only useful if you can recognise when it is doing its job — and when it is performing ceremony instead. These are the signals, straight from the project's usage guide."
+      >
+        <BehaviorContrast rows={explainers.behavior} />
+        <p className="mt-6 max-w-[74ch] text-[0.9375rem] leading-relaxed text-muted">
+          rd-skills reuses your existing authorization for bounded, reversible work. It asks when
+          the decision is yours: new scope, intended product behaviour, a compatibility break, or
+          authority for a destructive, privileged, production or irreversible action.
+        </p>
       </Section>
 
       {/* -------------------------------------------------- six-plane arch */}
